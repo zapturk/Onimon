@@ -1,0 +1,1 @@
+if sprite_index == spr_monster_capture obj_battle.alarm[0]++;

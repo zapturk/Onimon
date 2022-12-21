@@ -1,0 +1,30 @@
+
+YouTube Video Tutorial for how to make trainers:
+https://youtu.be/rNAbUlExlXY
+
+
+After dragging and dropping a trainer into the room, and selecting their sprite, it's time to assign their team.
+
+Adding monsters to an enemy team is really easy, you simple have to copy and paste a
+simple script into the objects CREATION CODE in the room.
+
+To do this, simply double click on the trainer that you just placed into your room, and
+select "Creation Code". You can then copy and paste the following into their creation
+code to assign this trainers monster team (minimum 1 monster, maximum 6 monsters)
+
+ADD_TRAINER_MONSTER(m.FURREAL, 5);
+
+Replace m.FURREAL with the monster you wish for them to have, and 5 with the level they will be.
+
+To have more monsters, simply add more lines, like so:
+
+ADD_TRAINER_MONSTER(m.FURREAL, 5);
+ADD_TRAINER_MONSTER(m.NEKOSWORD, 6);
+
+The "m." is an enumerator, and it's an easy way to keep track of long lists of possible variables.
+This is the monsters enumerator, so after you type "m.", you'll see a pop-up containing all of your
+monsters names. But, they are currently written with Dokimon's monsters names. You can rename them
+from within the "init" script, inside the "init_monsters" function.
+
+For more info about how enumerators work, here's is the GameMaker's documentation on them:
+https://manual.yoyogames.com/GameMaker_Language/GML_Overview/Variables/Constants.htm

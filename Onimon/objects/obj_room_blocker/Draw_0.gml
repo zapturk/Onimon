@@ -1,0 +1,1 @@
+paint(x, y, spr_room_block);
