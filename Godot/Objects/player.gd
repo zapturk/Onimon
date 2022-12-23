@@ -3,23 +3,47 @@ extends CharacterBody2D
 @export var walkSpeed = 4
 const TILE_SIZE = 16
 
+@onready var animTree = $AnimationTree
+@onready var animState = animTree.get("parameters/playback")
+
+enum PlayerStates {
+	IDLE,
+	TURNING,
+	WALKING
+}
+
+enum FacingDirections {
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+}
+
+var playerState = PlayerStates.IDLE
+var facingDir = FacingDirections.DOWN
+
 var initialPostion = Vector2(0,0)
 var inputDir = Vector2(0,0)
 var isMoving = false
 var percentMovedToNextTile = 0.0
 
 func _ready():
+	animTree.active = true
 	initialPostion = position
 
 func _physics_process(delta):
-	if isMoving == false:
-		processPlayerInput()
+	if playerState == PlayerStates.TURNING:
+		return
+	elif isMoving == false:
+		ProcessPlayerInput()
 	elif inputDir != Vector2.ZERO:
-		move(delta)
+		animState.travel("Walk")
+		Move(delta)
 	else:
+		animState.travel("Idle")
 		isMoving = false
 
-func  processPlayerInput():
+func  ProcessPlayerInput():
 	# figure out what direction the player wants to go
 	if inputDir.y == 0:
 		inputDir.x = int(Input.is_action_pressed("ui_right")) - int(Input.is_action_pressed("ui_left"))
@@ -27,11 +51,43 @@ func  processPlayerInput():
 		inputDir.y = int(Input.is_action_pressed("ui_down")) - int(Input.is_action_pressed("ui_up"))
 	
 	if inputDir != Vector2.ZERO:
-		initialPostion = position
-		isMoving = true
+		animTree.set("parameters/Idle/blend_position", inputDir)
+		animTree.set("parameters/Walk/blend_position", inputDir)
+		animTree.set("parameters/Turn/blend_position", inputDir)
+		
+		#check if we need turn
+		if NeedToTurn():
+			playerState = PlayerStates.TURNING
+			animState.travel("Turn")
+		else:
+			initialPostion = position
+			isMoving = true
+	else:
+		animState.travel("Idle")
+
+func NeedToTurn():
+	var newFacingDir
+	
+	if inputDir.x < 0:
+		newFacingDir = FacingDirections.LEFT
+	elif inputDir.x > 0:
+		newFacingDir = FacingDirections.RIGHT
+	if inputDir.y < 0:
+		newFacingDir = FacingDirections.UP
+	if inputDir.y > 0:
+		newFacingDir = FacingDirections.DOWN
+	
+	if facingDir != newFacingDir:
+		facingDir = newFacingDir
+		return true
+	facingDir = newFacingDir
+	return false
+
+func FinishedTurning():
+	playerState = PlayerStates.IDLE
 
 # moves the player keeping them on the grid
-func move(delta):
+func Move(delta):
 	percentMovedToNextTile += walkSpeed * delta
 	if percentMovedToNextTile >= 1.0:
 		position = initialPostion + (TILE_SIZE * inputDir)
