@@ -1,6 +1,0 @@
-function reload(){
-return 1;
-}
-
-//GMLive 
-#macro RELOAD reload();
