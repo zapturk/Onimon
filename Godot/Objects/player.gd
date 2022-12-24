@@ -5,6 +5,7 @@ const TILE_SIZE = 16
 
 @onready var animTree = $AnimationTree
 @onready var animState = animTree.get("parameters/playback")
+@onready var ray = $RayCast2D
 
 enum PlayerStates {
 	IDLE,
@@ -84,14 +85,26 @@ func NeedToTurn():
 	return false
 
 func FinishedTurning():
+	SetRay()
 	playerState = PlayerStates.IDLE
 
 # moves the player keeping them on the grid
 func Move(delta):
-	percentMovedToNextTile += walkSpeed * delta
-	if percentMovedToNextTile >= 1.0:
-		position = initialPostion + (TILE_SIZE * inputDir)
-		percentMovedToNextTile = 0.0
-		isMoving = false
+	SetRay()
+	
+	if !ray.is_colliding():
+		percentMovedToNextTile += walkSpeed * delta
+		if percentMovedToNextTile >= 1.0:
+			position = initialPostion + (TILE_SIZE * inputDir)
+			percentMovedToNextTile = 0.0
+			isMoving = false
+		else:
+			position = initialPostion + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	else:
-		position = initialPostion + (TILE_SIZE * inputDir * percentMovedToNextTile)
+		isMoving = false
+		
+func SetRay():
+	#check the next tile for colition
+	var desiredStep: Vector2 = inputDir * TILE_SIZE / 2
+	ray.target_position = desiredStep
+	ray.force_raycast_update()
