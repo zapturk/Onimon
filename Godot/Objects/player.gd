@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+signal player_moving_signal
+signal player_stopped_signal
+
 @export var walkSpeed = 4
 const TILE_SIZE = 16
 
@@ -89,22 +92,23 @@ func FinishedTurning():
 
 # moves the player keeping them on the grid
 func Move(delta):
-	SetRay()
+	#check the next tile for colition
+	var desiredStep: Vector2 = inputDir * TILE_SIZE / 2
+	ray.target_position = desiredStep
+	ray.force_raycast_update()
 	
+	#move the player if the ray cast is not moving
 	if !ray.is_colliding():
+		if percentMovedToNextTile == 0:
+			emit_signal("player_moving_signal")
 		percentMovedToNextTile += walkSpeed * delta
 		if percentMovedToNextTile >= 1.0:
 			position = initialPostion + (TILE_SIZE * inputDir)
 			percentMovedToNextTile = 0.0
 			isMoving = false
+			emit_signal("player_stopped_signal")
 		else:
 			position = initialPostion + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	else:
 		percentMovedToNextTile = 0.0
 		isMoving = false
-		
-func SetRay():
-	#check the next tile for colition
-	var desiredStep: Vector2 = inputDir * TILE_SIZE / 2
-	ray.target_position = desiredStep
-	ray.force_raycast_update()
