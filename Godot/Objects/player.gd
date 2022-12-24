@@ -85,7 +85,6 @@ func NeedToTurn():
 	return false
 
 func FinishedTurning():
-	SetRay()
 	playerState = PlayerStates.IDLE
 
 # moves the player keeping them on the grid
@@ -101,6 +100,7 @@ func Move(delta):
 		else:
 			position = initialPostion + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	else:
+		percentMovedToNextTile = 0.0
 		isMoving = false
 		
 func SetRay():
