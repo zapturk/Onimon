@@ -476,6 +476,7 @@ graph_offset = Vector2(-137, 48)
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_gufw2"]
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 6
 script = ExtResource("1_ov8ol")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -508,6 +509,12 @@ parameters/Walk/blend_position = Vector2(-0.00129032, 0.005988)
 offset = Vector2(8, 8)
 current = true
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="BlockingRayCast2D" type="RayCast2D" parent="."]
 position = Vector2(8, 8)
 target_position = Vector2(0, 8)
+collision_mask = 6
+
+[node name="LedgeRayCast2D2" type="RayCast2D" parent="."]
+position = Vector2(8, 8)
+target_position = Vector2(0, 8)
+collision_mask = 4

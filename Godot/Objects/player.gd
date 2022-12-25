@@ -4,11 +4,14 @@ signal player_moving_signal
 signal player_stopped_signal
 
 @export var walkSpeed = 4
+@export var jumpSpeed = 4
 const TILE_SIZE = 16
 
 @onready var animTree = $AnimationTree
 @onready var animState = animTree.get("parameters/playback")
-@onready var ray = $RayCast2D
+@onready var ray = $BlockingRayCast2D
+@onready var ledgeRay = $LedgeRayCast2D2
+var jumpingOverLedge: bool = false
 
 enum PlayerStates {
 	IDLE,
@@ -26,14 +29,14 @@ enum FacingDirections {
 var playerState = PlayerStates.IDLE
 var facingDir = FacingDirections.DOWN
 
-var initialPostion = Vector2(0,0)
+var initialPosition = Vector2(0,0)
 var inputDir = Vector2(0,0)
 var isMoving = false
 var percentMovedToNextTile = 0.0
 
 func _ready():
 	animTree.active = true
-	initialPostion = position
+	initialPosition = position
 
 func _physics_process(delta):
 	if playerState == PlayerStates.TURNING:
@@ -64,7 +67,7 @@ func  ProcessPlayerInput():
 			playerState = PlayerStates.TURNING
 			animState.travel("Turn")
 		else:
-			initialPostion = position
+			initialPosition = position
 			isMoving = true
 	else:
 		animState.travel("Idle")
@@ -97,18 +100,31 @@ func Move(delta):
 	ray.target_position = desiredStep
 	ray.force_raycast_update()
 	
-	#move the player if the ray cast is not moving
-	if !ray.is_colliding():
+	ledgeRay.target_position = desiredStep
+	ledgeRay.force_raycast_update()
+	
+	if (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedge:
+		percentMovedToNextTile += jumpSpeed * delta
+		if percentMovedToNextTile >= 2.0:
+			position = initialPosition + (TILE_SIZE * inputDir * 2)
+			percentMovedToNextTile = 0.0
+			isMoving = false
+			jumpingOverLedge = false
+		else:
+			jumpingOverLedge = true
+			var input = inputDir.y * TILE_SIZE * percentMovedToNextTile
+			position.y = initialPosition.y + (-0.96 - 0.53 * input + 0.05 * pow(input, 2))
+	elif !ray.is_colliding(): #move the player if the ray cast is not moving
 		if percentMovedToNextTile == 0:
 			emit_signal("player_moving_signal")
 		percentMovedToNextTile += walkSpeed * delta
 		if percentMovedToNextTile >= 1.0:
-			position = initialPostion + (TILE_SIZE * inputDir)
+			position = initialPosition + (TILE_SIZE * inputDir)
 			percentMovedToNextTile = 0.0
 			isMoving = false
 			emit_signal("player_stopped_signal")
 		else:
-			position = initialPostion + (TILE_SIZE * inputDir * percentMovedToNextTile)
+			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	else:
 		percentMovedToNextTile = 0.0
 		isMoving = false
