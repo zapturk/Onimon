@@ -11,7 +11,8 @@ const TILE_SIZE = 16
 @onready var animState = animTree.get("parameters/playback")
 @onready var ray = $BlockingRayCast2D
 @onready var ledgeRay = $LedgeRayCast2D2
-var jumpingOverLedge: bool = false
+var jumpingOverLedgeDown: bool = false
+var jumpingOverLedgeRight: bool = false
 
 enum PlayerStates {
 	IDLE,
@@ -103,28 +104,31 @@ func Move(delta):
 	ledgeRay.target_position = desiredStep
 	ledgeRay.force_raycast_update()
 	
-	if (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedge:
+	#Jumping over ledge
+	if (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedgeDown:
 		percentMovedToNextTile += jumpSpeed * delta
 		if percentMovedToNextTile >= 2.0:
 			position = initialPosition + (TILE_SIZE * inputDir * 2)
 			percentMovedToNextTile = 0.0
 			isMoving = false
-			jumpingOverLedge = false
+			jumpingOverLedgeDown = false
 		else:
-			jumpingOverLedge = true
+			jumpingOverLedgeDown = true
 			var input = inputDir.y * TILE_SIZE * percentMovedToNextTile
 			position.y = initialPosition.y + (-0.96 - 0.53 * input + 0.05 * pow(input, 2))
-	elif !ray.is_colliding(): #move the player if the ray cast is not moving
+	#move the player if the ray cast is not moving
+	elif !ray.is_colliding(): 
 		if percentMovedToNextTile == 0:
 			emit_signal("player_moving_signal")
 		percentMovedToNextTile += walkSpeed * delta
 		if percentMovedToNextTile >= 1.0:
 			position = initialPosition + (TILE_SIZE * inputDir)
+			emit_signal("player_stopped_signal")
 			percentMovedToNextTile = 0.0
 			isMoving = false
-			emit_signal("player_stopped_signal")
 		else:
 			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	else:
+		emit_signal("player_stopped_signal")
 		percentMovedToNextTile = 0.0
 		isMoving = false

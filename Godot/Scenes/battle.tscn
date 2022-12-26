@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://vc1wv8f2wwey"]
+
+[ext_resource type="Script" path="res://Scenes/battle.gd" id="1_7c64o"]
+[ext_resource type="Texture2D" uid="uid://tibil6dkanyv" path="res://Assets/PKMNGS_Wild_Battle2.png" id="1_8bnad"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_7c64o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8bnad")
+centered = false

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://brboca48d65f"]
+[gd_scene load_steps=9 format=3 uid="uid://brboca48d65f"]
 
 [ext_resource type="Texture2D" uid="uid://dtpnqbhq6j0ry" path="res://Assets/Objects/Grass.png" id="1_3ross"]
 [ext_resource type="Script" path="res://Objects/tall_grass.gd" id="1_ss65v"]
+[ext_resource type="Texture2D" uid="uid://bi8qedw5c8vsk" path="res://Assets/Objects/GrassStepOn.png" id="3_y5e28"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxi6x"]
 size = Vector2(14, 14)
@@ -78,5 +79,10 @@ root_node = NodePath("../Sprite2D")
 libraries = {
 "": SubResource("AnimationLibrary_liyq7")
 }
+
+[node name="TopGrass" type="Sprite2D" parent="."]
+z_index = 201
+texture = ExtResource("3_y5e28")
+centered = false
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
