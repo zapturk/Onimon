@@ -81,6 +81,7 @@ libraries = {
 }
 
 [node name="TopGrass" type="Sprite2D" parent="."]
+visible = false
 z_index = 201
 texture = ExtResource("3_y5e28")
 centered = false
