@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://b4j12lkqer235"]
+[gd_scene load_steps=41 format=3 uid="uid://b4j12lkqer235"]
 
 [ext_resource type="Script" path="res://Objects/player.gd" id="1_ov8ol"]
 [ext_resource type="Texture2D" uid="uid://bqm1ojpkh60ka" path="res://Assets/Player/Player-Boy.png" id="2_eopbm"]
@@ -115,6 +115,18 @@ tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -365,8 +377,24 @@ tracks/0/keys = {
 "values": [3, 4, 5, 4]
 }
 
+[sub_resource type="Animation" id="Animation_81y7f"]
+resource_name = "Disappear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q4gvr"]
 _data = {
+"Disappear": SubResource("Animation_81y7f"),
 "IdleDown": SubResource("Animation_q2hrm"),
 "IdleLeft": SubResource("Animation_rpocp"),
 "IdleRight": SubResource("Animation_347sc"),
@@ -518,3 +546,10 @@ collision_mask = 6
 position = Vector2(8, 8)
 target_position = Vector2(0, 8)
 collision_mask = 4
+
+[node name="DoorRayCast2D" type="RayCast2D" parent="."]
+position = Vector2(8, 8)
+target_position = Vector2(0, 8)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false

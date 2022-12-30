@@ -3,6 +3,10 @@ extends CharacterBody2D
 signal player_moving_signal
 signal player_stopped_signal
 
+signal player_entering_door_signal
+signal player_entered_door_signal
+
+
 @export var walkSpeed = 4
 @export var jumpSpeed = 4
 const TILE_SIZE = 16
@@ -11,6 +15,7 @@ const TILE_SIZE = 16
 @onready var animState = animTree.get("parameters/playback")
 @onready var ray = $BlockingRayCast2D
 @onready var ledgeRay = $LedgeRayCast2D2
+@onready var doorRay = $DoorRayCast2D
 var jumpingOverLedgeDown: bool = false
 var jumpingOverLedgeRight: bool = false
 
@@ -33,14 +38,16 @@ var facingDir = FacingDirections.DOWN
 var initialPosition = Vector2(0,0)
 var inputDir = Vector2(0,0)
 var isMoving = false
+var stopInput: bool = false
 var percentMovedToNextTile = 0.0
 
 func _ready():
+	$Sprite2D.visible = true
 	animTree.active = true
 	initialPosition = position
 
 func _physics_process(delta):
-	if playerState == PlayerStates.TURNING:
+	if playerState == PlayerStates.TURNING or stopInput:
 		return
 	elif isMoving == false:
 		ProcessPlayerInput()
@@ -93,6 +100,9 @@ func NeedToTurn():
 
 func FinishedTurning():
 	playerState = PlayerStates.IDLE
+	
+func EnteredDoor():
+	emit_signal("player_entered_door_signal")
 
 # moves the player keeping them on the grid
 func Move(delta):
@@ -104,8 +114,25 @@ func Move(delta):
 	ledgeRay.target_position = desiredStep
 	ledgeRay.force_raycast_update()
 	
+	doorRay.target_position = desiredStep
+	doorRay.force_raycast_update()
+	
+	#Walking into a door
+	if doorRay.is_colliding():
+		if percentMovedToNextTile == 0.0:
+			emit_signal("player_entering_door_signal")
+		percentMovedToNextTile += walkSpeed * delta
+		if percentMovedToNextTile >= 1.0:
+			position = initialPosition + (TILE_SIZE * inputDir)
+			percentMovedToNextTile = 0.0
+			isMoving = false
+			stopInput = true
+			$AnimationPlayer.play("Disappear")
+			$Camera2D.clear_current()
+		else:
+			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	#Jumping over ledge
-	if (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedgeDown:
+	elif (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedgeDown:
 		percentMovedToNextTile += jumpSpeed * delta
 		if percentMovedToNextTile >= 2.0:
 			position = initialPosition + (TILE_SIZE * inputDir * 2)
