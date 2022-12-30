@@ -1,7 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://yk0lfrrq6tqn"]
+[gd_scene load_steps=7 format=3 uid="uid://qtqte72gdblq"]
 
 [ext_resource type="Script" path="res://scene_manager.gd" id="1_bn60a"]
-[ext_resource type="PackedScene" uid="uid://icrus56oha27" path="res://Maps/Overworld.tscn" id="1_l4pwe"]
+[ext_resource type="PackedScene" path="res://Maps/Overworld.tscn" id="1_l4pwe"]
+
+[sub_resource type="Animation" id="Animation_qspgd"]
+resource_name = "FadeToNormal"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_7oojn"]
 resource_name = "FadeToWhite"
@@ -46,22 +62,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_qspgd"]
-resource_name = "FadeToNormal"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y6j75"]
