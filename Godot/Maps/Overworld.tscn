@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://c1u1j5igfc5oy"]
 
 [ext_resource type="PackedScene" uid="uid://wt0ldjccaccv" path="res://Maps/PrimeTown/PrimeTown.tscn" id="1_s3h10"]
 [ext_resource type="PackedScene" uid="uid://b4j12lkqer235" path="res://Objects/player.tscn" id="1_ygsxf"]

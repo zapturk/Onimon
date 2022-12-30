@@ -5,7 +5,7 @@ var nextScene = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$ScreenTransition/AnimationPlayer.play("FadeToNormal")
 
 
 func transitionToScreen(newScene: String):

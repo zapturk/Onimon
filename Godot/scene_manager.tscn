@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://qtqte72gdblq"]
 
 [ext_resource type="Script" path="res://scene_manager.gd" id="1_bn60a"]
-[ext_resource type="PackedScene" path="res://Maps/Overworld.tscn" id="1_l4pwe"]
+[ext_resource type="PackedScene" uid="uid://c1u1j5igfc5oy" path="res://Maps/Overworld.tscn" id="1_l4pwe"]
 
 [sub_resource type="Animation" id="Animation_qspgd"]
 resource_name = "FadeToNormal"
