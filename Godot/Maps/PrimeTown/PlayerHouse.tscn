@@ -3362,7 +3362,7 @@ layer_2/z_index = 2
 layer_2/tile_data = PackedInt32Array()
 
 [node name="Player" parent="." instance=ExtResource("2_ddtpy")]
-position = Vector2(48, 96)
+position = Vector2(80, 112)
 
 [node name="ExitHome" parent="." instance=ExtResource("3_mbfl2")]
 position = Vector2(48, 127)

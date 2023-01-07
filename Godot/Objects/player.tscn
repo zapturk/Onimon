@@ -505,6 +505,7 @@ graph_offset = Vector2(-137, 48)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 6
+up_direction = Vector2(0, 1)
 script = ExtResource("1_ov8ol")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

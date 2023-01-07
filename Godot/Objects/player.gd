@@ -36,7 +36,7 @@ var playerState = PlayerStates.IDLE
 var facingDir = FacingDirections.DOWN
 
 var initialPosition = Vector2(0,0)
-var inputDir = Vector2(0,0)
+var inputDir = Vector2(0,1)
 var isMoving = false
 var stopInput: bool = false
 var percentMovedToNextTile = 0.0
@@ -47,7 +47,16 @@ func _ready():
 	$Sprite2D.visible = true
 	animTree.active = true
 	initialPosition = position
+	animTree.set("parameters/Idle/blend_position", inputDir)
+	animTree.set("parameters/Walk/blend_position", inputDir)
+	animTree.set("parameters/Turn/blend_position", inputDir)
 	
+
+func setSpawn(location: Vector2, dir: Vector2):
+	animTree.set("parameters/Idle/blend_position", dir)
+	animTree.set("parameters/Walk/blend_position", dir)
+	animTree.set("parameters/Turn/blend_position", dir)
+	position = location
 
 func _physics_process(delta):
 	if playerState == PlayerStates.TURNING or stopInput:

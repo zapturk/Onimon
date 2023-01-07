@@ -3455,3 +3455,5 @@ layer_0/z_index = 1
 [node name="Door" parent="." instance=ExtResource("4_u0o5t")]
 position = Vector2(192, 208)
 nextScenePath = "res://Maps/PrimeTown/PlayerHouse.tscn"
+spawnLocation = Vector2(48, 112)
+spawnDirection = Vector2(1, 1)
