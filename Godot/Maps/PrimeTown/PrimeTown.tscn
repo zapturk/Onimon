@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://wt0ldjccaccv"]
+[gd_scene load_steps=11 format=3 uid="uid://wt0ldjccaccv"]
 
 [ext_resource type="Texture2D" uid="uid://cudlxpt1ykm4f" path="res://Assets/Tileset/tilesets color suggestion.png" id="1_eneid"]
 [ext_resource type="Texture2D" uid="uid://ui1w3hvixjq3" path="res://Assets/Tileset/WaterEdges.png" id="2_t6srs"]
 [ext_resource type="Texture2D" uid="uid://cqcdih7vqitks" path="res://Assets/Tileset/Ledge.png" id="3_wlpu6"]
+[ext_resource type="PackedScene" uid="uid://i7wo4y4q4qn8" path="res://Objects/door.tscn" id="4_u0o5t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mvwfj"]
 texture = ExtResource("1_eneid")
@@ -3450,3 +3451,7 @@ tile_set = SubResource("TileSet_6s1fd")
 format = 2
 layer_0/name = "Ledge"
 layer_0/z_index = 1
+
+[node name="Door" parent="." instance=ExtResource("4_u0o5t")]
+position = Vector2(192, 208)
+nextScenePath = "res://Maps/PrimeTown/PlayerHouse.tscn"

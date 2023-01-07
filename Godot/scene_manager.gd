@@ -1,6 +1,6 @@
 extends Node2D
 
-var nextScene = null
+var nextScene:String = ""
 
 
 # Called when the node enters the scene tree for the first time.
@@ -14,5 +14,5 @@ func transitionToScreen(newScene: String):
 	
 func finishedFading():
 	$CurrentScene.get_child(0).queue_free()
-	$CurrentScene.add_child(load(nextScene).instance())
+	$CurrentScene.add_child(load(nextScene).instantiate())
 	$ScreenTransition/AnimationPlayer.play("FadeToNormal")

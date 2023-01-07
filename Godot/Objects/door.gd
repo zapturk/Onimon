@@ -1,12 +1,12 @@
 extends Area2D
- 
-@export var nextScenePath  = ""
+
+@export var nextScenePath:String = ""
+@onready var player = get_parent().get_parent().get_node("Player")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	player.connect("player_entered_door_signal", enteredDoor)
+	
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func enteredDoor():
+	get_node(NodePath("/root/SceneManager")).transitionToScreen(nextScenePath)

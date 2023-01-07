@@ -128,9 +128,10 @@ func Move(delta):
 			isMoving = false
 			stopInput = true
 			$AnimationPlayer.play("Disappear")
-			$Camera2D.clear_current()
+			EnteredDoor()
 		else:
 			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
+	
 	#Jumping over ledge
 	elif (ledgeRay.is_colliding() && inputDir == Vector2(0, 1)) or jumpingOverLedgeDown:
 		percentMovedToNextTile += jumpSpeed * delta
@@ -143,6 +144,7 @@ func Move(delta):
 			jumpingOverLedgeDown = true
 			var input = inputDir.y * TILE_SIZE * percentMovedToNextTile
 			position.y = initialPosition.y + (-0.96 - 0.53 * input + 0.05 * pow(input, 2))
+	
 	#move the player if the ray cast is not moving
 	elif !ray.is_colliding(): 
 		if percentMovedToNextTile == 0:
