@@ -42,9 +42,12 @@ var stopInput: bool = false
 var percentMovedToNextTile = 0.0
 
 func _ready():
+	z_index = 100
+	$Camera2D.current = true
 	$Sprite2D.visible = true
 	animTree.active = true
 	initialPosition = position
+	
 
 func _physics_process(delta):
 	if playerState == PlayerStates.TURNING or stopInput:
