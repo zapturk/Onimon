@@ -53,13 +53,22 @@ if press(ESCAPE){
 	//Otherwise, perform specific things based on which menu we are paused into
 	else{
 		switch (pause){
+			
+			case _pause.paused:
+				sel[0] = 0;
+				pause = _pause.not_paused;
+				unpause();
+				exit;
+				
 			case _pause.mondex:
 				pause = _pause.dtech;
 				sel[1] = 0;
 				break;
+				
 			case _pause.mondex_info:
 				pause = _pause.mondex;
 				break;
+				
 			case _pause.party:
 				if float_mon != -1{
 					float_mon = -1;
@@ -77,7 +86,7 @@ if press(ESCAPE){
 				break;
 			case _pause.info:
 				if sel[4] > 0{
-					sel[2] = -1;
+					sel[2] = 1;
 					sel[4] = 0;
 					break;
 					}
@@ -85,18 +94,22 @@ if press(ESCAPE){
 					sel[3] = 0;
 					break;
 					}
-				sel[2] = -1;
+				sel[2] = 1;
 				sel[3] = 0;
 				sel[4] = 0;
 				pause = _pause.party;
 				break;
+				
 			case _pause.pc:
 				room_goto(curr_rm);
 				pause = _pause.dtech
 				sel[1] = 1;
 				break;
+				
 			default:
-				unpause();
+				pause = _pause.paused;
+				sel[1] = 0;
+				break;
 			}
 		}
 	}
@@ -107,11 +120,12 @@ if pause == 1{
 	if press(ENTER){
 		if sel[0] == 0 pause = _pause.dtech;
 		if sel[0] == 1 pause = _pause.party; sel[2] = -1;
-		//if sel[0] == 2 pause = _pause.inventory;
+		if sel[0] == 2 pause = _pause.inventory;
 		if sel[0] == 3 pause = _pause.idcard;
 		if sel[0] == 4{
 			save();
-			//show_message("Game has been saved. Press DEL in Title screen to delete your save.");
+			flash = 0.75;
+			audio_play_sound(snd_save, 1, 0);
 			pause = 0;
 			sel[0] = 0;
 			}
@@ -275,6 +289,14 @@ if pause == _pause.info{
 		
 		//We've chosen a new move to use~ Add it to our movepool from our broad movepool and then exit this menu
 		if press(ENTER){
+			
+			//Make sure we're not giving this monster a move it already has 
+			var new_move = movepool[monsters[sel[1], 0], sel[4]-1];
+			for (var i = 0; i < 4; i++;){
+				if monsters[sel[1], (party.move1+i)] == new_move exit;
+				}
+				
+			//Assign this monsters current move, to the move we're choosing from it's movepool
 			monsters[sel[1], (party.move1+(sel[3]-1))] = movepool[monsters[sel[1], 0], sel[4]-1];
 			
 			//Don't forget to set this monsters MANA to the max mana of the move too :)

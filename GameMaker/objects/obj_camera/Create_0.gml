@@ -50,6 +50,9 @@ flash = 0;
 alph = -0.5;
 logoff_alpha = 0;
 
+scrolling_bg_x = 0;
+scrolling_bg_y = 0;
+
 enum _pause{
 	not_paused, paused, dtech, mondex, mondex_info, party, info, inventory, idcard, save, logoff, pc
 	}

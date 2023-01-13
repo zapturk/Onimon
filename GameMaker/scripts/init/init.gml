@@ -1,3 +1,4 @@
+
 function reload(){
 return 1;
 }
@@ -80,6 +81,7 @@ moni = 500;
 #macro ENGLISH	0			//Default: ENGLISH	0
 #macro JAPANESE 1			//Default: JAPANESE 1
 
+
 globalvar language, screenshots, volume;
 language = ENGLISH;
 screenshots = 0;
@@ -88,11 +90,15 @@ volume = 0;
 audio_set_master_gain(1, volume);
 
 
-//Ignore these errors
 #region General Init
+
 globalvar pause, debug;
 pause = 0;
 debug = -1;
+
+globalvar CAPS_LOCKED;
+CAPS_LOCKED = 0;
+
 #endregion
 
 #region Controller stuff
@@ -196,12 +202,12 @@ mondex = undefined;
 
 //Enumerators to help us keep track of where specific data is in their matching arrays
 enum dex{
-	name, health, atk, def, mgk_atk, mgk_def, spd, element1, element2, ability, cap_rate, sub_descrip, descrip
+	name, health, atk, def, mgk_atk, mgk_def, spd, element1, element2, evolve, cap_rate, sub_descrip, descrip
 	//if desired, you can also include these:
 	//weight, height, cry, artist, designer, etc
 	}
 enum element{
-	fire, grass, water, electric, dark, light, flying, fight, poison, dragon, fairy
+	fire, grass, water, electric, dark, light, flying, fight, poison, dragon, fairy, ghost, ice
 	}
 
 //Input your monsters base statistics
@@ -214,6 +220,17 @@ enum element{
 //Pleaes keep this in mind if you start re-ordering monsters.
 monsters_enum();
 
+#region Starters
+//Fire Starter
+
+
+//Grass Starter
+
+
+//Water Starter
+
+#endregion
+
 #region 1st Row of Monsters
 BUILD_MONDEX_ARRAY("Furreal",		23, 67, 48, 32, 51, 80,			element.light, -1, 1, 1);
 BUILD_MONDEX_ARRAY("Leekloo",		33, 80, 64, 42, 61, 101,		element.light, -1, 1, 1);
@@ -224,106 +241,116 @@ BUILD_MONDEX_ARRAY("Nekosword 2",	45, 16, 48, 147, 94, 133,		element.fairy, -1, 
 BUILD_MONDEX_ARRAY("Carrotti",		41, 60, 67, 24, 48, 62,		element.grass, -1, 1, 1);
 
 BUILD_MONDEX_ARRAY("Kakaratt",		59, 78, 88, 34, 62, 81,		element.grass, element.dark, -1, 1);
-BUILD_MONDEX_ARRAY("Quackfil",		45, 60, 40, 70, 50, 45,		element.dark, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Quackfil",		45, 60, 40, 70, 50, 45,		element.dark, -1, -1, 1);
 BUILD_MONDEX_ARRAY("Quackfear",		45, 60, 40, 70, 50, 45,		element.dark, -1, -1, 1);
 #endregion
 
 #region 2nd Row of Monsters
-BUILD_MONDEX_ARRAY("Casper",		26, 7, 37, 96, 59, 78,		element.dark, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Casper",		26, 7, 37, 96, 59, 78,		element.dark, -1, -1, 1);
 BUILD_MONDEX_ARRAY("Deathscye",		35, 17, 46, 121, 82, 106,	element.dark, -1, -1, 1);
-BUILD_MONDEX_ARRAY("Nimbis",		45, 60, 40, 75, 50, 45,		element.light, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Nimbis",		45, 60, 40, 75, 50, 45,		element.light, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Lloudious",		45, 60, 40, 75, 50, 45,		element.light, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Cresyl",		45, 60, 40, 75, 50, 45,		element.light, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Cressentia",	45, 60, 40, 75, 50, 45,		element.light, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Lloudious",		45, 60, 40, 75, 50, 45,		element.light, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Pheonix",		45, 60, 40, 75, 50, 45,		element.light, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Lucifeather",	45, 60, 40, 75, 50, 45,		element.light, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Moisen",	44, 74, 22, 53, 22, 66,			element.flying, element.poison, 1, 1);
-BUILD_MONDEX_ARRAY("Birzhen",	62, 103, 34, 85, 32, 106,		element.flying, element.poison, 1, 1);
+BUILD_MONDEX_ARRAY("Flounder",	44, 74, 22, 53, 22, 66,			element.flying, element.poison, -1, 1);
+BUILD_MONDEX_ARRAY("Mudslip",	62, 103, 34, 85, 32, 106,		element.flying, element.poison, -1, 1);
 BUILD_MONDEX_ARRAY("Bundust",		32, 63, 38, 71, 67, 70,		element.fairy, -1, 1, 1);
 #endregion
 
 #region 3rd Row of Monsters
-BUILD_MONDEX_ARRAY("Juskitten",		32, 63, 38, 71, 67, 70,		element.light, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Harlequitten",	40, 82, 52, 92, 88, 88,		element.light, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Nyarlolet",		46, 86, 56, 100, 92, 102,	element.light, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Juskitten",		32, 63, 38, 71, 67, 70,		element.light, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Harlequitten",	40, 82, 52, 92, 88, 88,		element.light, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Nyarlolet",		46, 86, 56, 100, 92, 102,	element.light, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("FireKitty",	38, 12, 41, 91, 72, 89,			element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("FireStand",	52, 16, 49, 119, 93, 114,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Haracker",	45, 60, 40, 75, 50, 45,		element.fight, -1, 1, 1);
+BUILD_MONDEX_ARRAY("FireKitty",	38, 12, 41, 91, 72, 89,			element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("FireStand",	52, 16, 49, 119, 93, 114,		element.fire, -1, -1, -1);
+BUILD_MONDEX_ARRAY("Haracker",	45, 60, 40, 75, 50, 45,		element.fight, -1, -1, -1);
 
-BUILD_MONDEX_ARRAY("Hareate",	45, 60, 40, 75, 50, 45,		element.fight, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Soul",		45, 60, 40, 75, 50, 45,		element.dark, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Jistery",	45, 60, 40, 75, 50, 45,		element.dark, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Hareate",	45, 60, 40, 75, 50, 45,		element.fight, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Soul",		45, 60, 40, 75, 50, 45,		element.dark, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Jistery",	45, 60, 40, 75, 50, 45,		element.dark, -1, -1, 1);
 #endregion
 
 #region 4th Row of Monsters
-BUILD_MONDEX_ARRAY("Loomleak",	84, 69, 55, 10, 73, 31,		element.water, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Marillo",	120, 92, 74, 14, 100, 42,	element.water, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Luna",			45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Loomleak",	84, 69, 55, 10, 73, 31,		element.water, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Marillo",	120, 92, 74, 14, 100, 42,	element.water, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Luna",			45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Eclipse",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Kindle",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Hiku",			45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Eclipse",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Kindle",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Hiku",			45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Electro Llama",			45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Emberox",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Glaceia",		45, 60, 40, 75, 50, 45,		element.water, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Electro Llama",			45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Emberox",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Glaceia",		45, 60, 40, 75, 50, 45,		element.water, -1, -1, 1);
 #endregion
 
 #region 5th Row of Monsters
-BUILD_MONDEX_ARRAY("Flurox",		45, 60, 40, 75, 50, 45,		element.grass, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Boltrex",		45, 60, 40, 75, 50, 45,		element.electric, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Yorox",			45, 60, 40, 75, 50, 45,		element.dark, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Flurox",		45, 60, 40, 75, 50, 45,		element.grass, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Boltrex",		45, 60, 40, 75, 50, 45,		element.electric, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Yorox",			45, 60, 40, 75, 50, 45,		element.dark, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Kyle Man",				45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Daniel",				45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Corsac",		90, 97, 85, 97, 98, 95,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Kyle Man",				45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Daniel",				45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Corsac",		90, 97, 85, 97, 98, 95,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Knyfagon",		89, 101, 100, 88, 91, 92,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Knyfagon",		89, 101, 100, 88, 91, 92,		element.fire, -1, -1, 1);
 BUILD_MONDEX_ARRAY("T-Kob",            65, 30, 35, 80, 70, 20,        element.fire, element.poison, 1, 1);
 BUILD_MONDEX_ARRAY("T-Kobom",        85, 50, 90, 85, 90, 80,        element.fire, element.electric, 1, 1);
 #endregion
 
 #region 6th Row of Monsters
 BUILD_MONDEX_ARRAY("X-Koboma",      90, 60, 70, 140, 110, 120,    element.fire, element.dark, 1, 1);
-BUILD_MONDEX_ARRAY("Dartarget",		45, 60, 40, 75, 50, 45,		element.dark, -1, 1, 1);
-BUILD_MONDEX_ARRAY("",				45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Dartarget",		45, 60, 40, 75, 50, 45,		element.dark, -1, -1, 1);
+BUILD_MONDEX_ARRAY("",				45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 #endregion
 
 #region Psuedo Legendaries + Whisps + Gods
-BUILD_MONDEX_ARRAY("Urelia",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Urelia",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("Embud",			43, 9, 36, 94, 62, 98,			element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Embellia",		55, 10, 46, 138, 85, 133,		element.fire, -1, 1, 1);
-BUILD_MONDEX_ARRAY("Kthuunevire",	70, 21, 56, 177, 110, 176,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("Embud",			43, 9, 36, 94, 62, 98,			element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Embellia",		55, 10, 46, 138, 85, 133,		element.fire, -1, -1, 1);
+BUILD_MONDEX_ARRAY("Kthuunevire",	70, 21, 56, 177, 110, 176,		element.fire, -1, -1, 1);
 
-BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+BUILD_MONDEX_ARRAY("",		45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 #endregion
 
-//BUILD_MONDEX_ARRAY("",	45, 60, 40, 75, 50, 45,		element.fire, -1, 1, 1);
+//BUILD_MONDEX_ARRAY("",	45, 60, 40, 75, 50, 45,		element.fire, -1, -1, 1);
 
 //Load MonMae Monster Dex Data if we have it 
 #region MonDex.ini Check / Load
 
 if file_exists("mondex.ini"){
+	
+	//Create the max limit of monsters we can have before filling in the information from our ini save file
+	for (var o = 0; o < 366; o++;){
+		for (var i = 1; i < 10; i++;){
+			mondex[o, i] = 0;
+			}
+		mondex[o, 0]	 = "Mon Name";
+		mondex[o, 11]	 = "Sub Descr"
+		mondex[o, 12]	 = "Description";
+		}
 
 	//Loop through the default values and create a default file to load later (delete later)
-	ini_open("default.ini");
+	ini_open("mondex.ini");
 	for (var o = 0; o < array_length(mondex); o++;){
 		for (var i = 1; i < 10; i++;){
-			ini_write_real("Monster_" + string(o), "Val" + string(i), mondex[o, i]);
+			mondex[o, i] = ini_read_real("Monster_" + string(o), "Val" + string(i), 0);
 			}
-		ini_write_string("Monster_" + string(o), "Val" + string(0), mondex[o, 0]);
-		ini_write_string("Monster_" + string(o), "Val" + string(11), mondex[o, 11]);
-		ini_write_string("Monster_" + string(o), "Val" + string(12), mondex[o, 12]);
+		mondex[o, 0] = ini_read_string("Monster_" + string(o), "Val" + string(0), "");
+		mondex[o, 11] = ini_read_string("Monster_" + string(o), "Val" + string(11), "");
+		mondex[o, 12] = ini_read_string("Monster_" + string(o), "Val" + string(12), "");
 		}
 	ini_close();
 	}
@@ -426,7 +453,7 @@ enum status{
 	none, burn, poison, sleep, paralyze, confused
 	}
 enum type{
-	physical, magical, support	
+	physical, magical, support
 	}
 
 //Populate the data for your moves. For Tackle and Scratch, nothing after PP is used, so we can leave it blank
@@ -463,119 +490,205 @@ enum moves{
 
 #region Light Moves
 BUILD_MOVEDEX_ARRAY("Clobber",	"Throws a hefty swing at the enemy",
-	spr_impact_01,	40,	element.light,	type.physical,	95,		35);
+mov_impact_01,	40,	element.light,	type.physical,	95,		35);
 BUILD_MOVEDEX_ARRAY("Glimmer",	"Channels magical power through their body, increasing magical attack",
-	spr_impact_01,	-1,	element.light,	type.support,	-1,		30, move.chance_stat, 100, move.mgk_atk, 1);
+	mov_impact_01,	-1,	element.light,	type.support,	-1,		30, move.chance_stat, 100, move.mgk_atk, 1);
 BUILD_MOVEDEX_ARRAY("Alarm",	"An intense sonic boom rings out, reducing enemy defenses",
-	spr_impact_01,	-1,	element.light,	type.support,	100,	40, move.chance_stat, 100, move.e_atk, -1);
+	mov_impact_01,	-1,	element.light,	type.support,	100,	40, move.chance_stat, 100, move.e_atk, -1);
 BUILD_MOVEDEX_ARRAY("Curl up",	"Caster readies themself for oncoming attacks, boosting defense",
-	spr_impact_01,	-1,	element.light,	type.support,	-1,		40, move.chance_stat, 100, move.atk, 1, move.def, 1);
+	mov_impact_01,	-1,	element.light,	type.support,	-1,		40, move.chance_stat, 100, move.atk, 1, move.def, 1);
 BUILD_MOVEDEX_ARRAY("Cut",		"Lashes out and slashes the enemy, small chance to flinch",
-	spr_slash_01,	30,	element.light,	type.physical,	100,	30, move.chance_flinch, 10);
+	mov_slash_01,	30,	element.light,	type.physical,	100,	30, move.chance_flinch, 10);
 BUILD_MOVEDEX_ARRAY("Sharpen",	"Caster gets ready for a deadly attack, raises physical attack ",
-	spr_impact_01,	-1,	element.light,	type.support,	-1,		30, move.chance_stat, 100, move.atk, 1);
+	mov_impact_01,	-1,	element.light,	type.support,	-1,		30, move.chance_stat, 100, move.atk, 1);
 BUILD_MOVEDEX_ARRAY("Swipe",	"An ferrocious slash that could leave some fatally wounded",
-	spr_impact_01,	60,	element.light,	type.physical,	100,	30);
-BUILD_MOVEDEX_ARRAY("Protect",	"Guards from nearly all enemy attacks", spr_protect, -1,
+	mov_impact_01,	60,	element.light,	type.physical,	100,	30);
+BUILD_MOVEDEX_ARRAY("Protect",	"Guards from nearly all enemy attacks", mov_protect, -1,
 	element.light,	type.support,	100,	15, move.protect, 1, move.priority, 1, move.animation, 1);
 BUILD_MOVEDEX_ARRAY("Purify",	"Clears the users body of any negative afflictions",
-	spr_impact_01,	-1,	element.light,	type.support,	100,	40);
+	mov_impact_01,	-1,	element.light,	type.support,	100,	40);
 BUILD_MOVEDEX_ARRAY("Blinding Light",	"A bright blast of light, may leave the enemy blinded, with lowered accuracy",
-	spr_blast_01,	95,	element.light,	type.magical,	100,	15, move.chance_stat, 20, move.e_acc, -2);
+	mov_blast_01,	95,	element.light,	type.magical,	100,	15, move.chance_stat, 20, move.e_acc, -2);
+
+BUILD_MOVEDEX_ARRAY("Surprise Attack", "Getting the jump on the enemy, it causes flinch. Only usable on the user's first turn.", mov_impact_01, 40, element.light, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Furball", "Ewww. It may lower the enemy's speed.", mov_impact_01, 40, element.poison, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Juggle", "A fun trick turned into a capable attack. Power doubles with a held item.", mov_impact_01, 40, element.light, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Curl Up", "Assume's a ball formation, it raises the user's defense.", mov_impact_01, 40, element.light, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Mighty Mash", "A heroic show of strength, worthy of a protagonist. It may raise the user's attack.", mov_impact_01, 40, element.fight, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Bright Claws", "A flurry of flashy slashes.", mov_impact_01, 40, element.light, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Stampede", "Bulldozes anything in their path, it raises the user's speed.", mov_impact_01, 40, element.light, type.physical, 100, 40);
+BUILD_MOVEDEX_ARRAY("Light Lasso", "Ties the enemy with binding energy, it may cause paralysis.", mov_impact_01, 40, element.electric, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Crush Root", "Smashes the enemy with a robust root", mov_impact_01, 75, element.grass, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Vine Snare", "Entangles the enemy in tight vines, it hurts the enemy each turn", mov_impact_01, 75, element.grass, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Shroom Shield", "A fungus defense, if attack it will put the enemy to sleep", mov_impact_01, 75, element.grass, type.magical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Seed Sling", "Shoots sharp seeds at the enemy, it hits 2-5 times", mov_impact_01, 75, element.grass, type.physical, 85, 75);
+BUILD_MOVEDEX_ARRAY("Thorn Slice", "Sharp as a sword, with a toxic tip. It may poison the enemy", mov_impact_01, 75, element.grass, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Grass Scythe", "The finest blade found in nature, it has a high chance of a critical hit", mov_impact_01, 75, element.grass, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Anchor Bash", "A smash of sunken strength, it may cause the enemy to flinch", mov_impact_01, 75, element.water, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Sea Salts", "Throws a pinch of sea salts into the enemy's eyes, lowering accuracy.", mov_impact_01, 75, element.water, type.magical, 85, 15);
+
+BUILD_MOVEDEX_ARRAY("Rain Rush", "A slippery sprint to the enemy, it usually goes first", mov_impact_01, 75, element.water, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Still Waters", "Channels the calmness of water, before an unleashing a forceful wave", mov_impact_01, 75, element.water, type.magical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Submarine", "Delves under the surface, before springing up into an attack the next turn", mov_impact_01, 75, element.water, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Cannonball", "Slams the enemy with oceanic power, the user takes recoil damage", mov_impact_01, 75, element.water, type.physical, 95, 15);
+
+BUILD_MOVEDEX_ARRAY("Smoke Bomb", "A clever distraction, the user swaps out with a party member", mov_impact_01, 75, element.light, type.support, 70, 15);
+BUILD_MOVEDEX_ARRAY("Rocket Burst", "Launches forward with blazing boosters, it usually goes first", mov_impact_01, 75, element.fire, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Fireball", "A barrage of burning balls of fire. Hits 2-5 times", mov_impact_01, 75, element.fire, type.magical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Overclock", "Pushing its electric power past the limits, the user's magical attack sharply increases", mov_impact_01, 75, element.electric, type.magical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Charge Cannon", "Stores up electricity, then unleashes it the next turn", mov_impact_01, 75, element.electric, type.magical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Early Bird", "Plucks the enemy. It can only be used on the user's first turn, and always goes first", mov_impact_01, 75, element.light, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Flurry Wind", "Casts gusts of wind at the enemy. Hits 2-5 times", mov_impact_01, 75, element.flying, type.physical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Sky Dance", "Disappears into the clouds, then dives at the enemy the next turn", mov_impact_01, 75, element.flying, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Feather Fan", "Slashes the enemy with sharpened feathers. It has a high chance of a critical hit", mov_impact_01, 75, element.flying, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Pep Talk", "Psychs themself up for battle, the user's next attack is super effective", mov_impact_01, 75, element.light, type.support, 70, 15);
+
+BUILD_MOVEDEX_ARRAY("First Blow", "An often decisive first strike. It can only be used on the user's first turn", mov_impact_01, 75, element.light, type.physical, 95, 15);
+BUILD_MOVEDEX_ARRAY("Sword Slash", "Simple to learn, near impossible to master.", mov_impact_01, 75, element.light, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Shadow Box", "What's scarier than a fist? A fist you can't see. Super effective against fighting type", mov_impact_01, 75, element.dark, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Hijinx", "A cheeky trick, the user swaps a random stat with their opponent", mov_impact_01, 75, element.light, type.support, 70, 15);
+BUILD_MOVEDEX_ARRAY("Tail Trap", "Creates a tripwire with their tail, the opponent gets trapped in battle", mov_impact_01, 75, element.light, type.support, 70, 15);
+BUILD_MOVEDEX_ARRAY("Dark Bond", "Connects their fate to the opponent, reflecting any damage they take that turn", mov_impact_01, 75, element.dark, type.support, 70, 15);
+
+BUILD_MOVEDEX_ARRAY("X-Slash", "Sharp! This attack does double damage for Dokimon with claws and blades", mov_impact_01, 75, element.light, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Dark Toll", "Sealing the enemy's fate, they will faint after 3 turns, unless swapped out", mov_impact_01, 75, element.dark, type.magical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Double Cross", "Back to back swipes at the enemy. Hits twice", mov_impact_01, 75, element.light, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Toxic Maw", "A vile bite, oozing with poison. It may cause poison", mov_impact_01, 75, element.poison, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Corrosion", "Dissolves it's defenses. Sharply increases attack.", mov_impact_01, 75, element.poison, type.magical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Poison Puff", "A breath of toxic fumes, it may cause poison", mov_impact_01, 75, element.poison, type.magical, 85, 15);
+
+BUILD_MOVEDEX_ARRAY("Poison Darts", "Shoots dangerous darts at the enemy. Hits 2-5 times. It may cause poison", mov_impact_01, 75, element.poison, type.magical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Acid Storm", "Rain's poison on their opponent, it leaves the battlefield covered in acid", mov_impact_01, 75, element.poison, type.magical, 85, 15);
+BUILD_MOVEDEX_ARRAY("Sharp Scale", "A dragon's scales are used for many things, including slashing.", mov_impact_01, 75, element.dragon, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Draco Jaw", "Snaps at the enemy with its mighty fangs.", mov_impact_01, 75, element.dragon, type.physical, 90, 15);
+BUILD_MOVEDEX_ARRAY("Dragon Greed", "Always after gold, the user steals from the enemy", mov_impact_01, 75, element.dragon, type.support, 70, 15);
+BUILD_MOVEDEX_ARRAY("Fierce Gaze", "Strikes fear into the enemy, lowering attack and defense, but raising speed", mov_impact_01, 75, element.dragon, type.support, 70, 15);
+BUILD_MOVEDEX_ARRAY("Hydra Blast", "The user attacks last. If damaged, the move hits twice", mov_impact_01, 75, element.dragon, type.magical, 85, 15);
+
+
+
+BUILD_MOVEDEX_ARRAY("Surprise Attack", "Getting the jump on the enemy, it causes flinch. Only usable on the user's first turn."
+, mov_impact_01, 40, element.light, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Furball", "Ewww. It may lower the enemy's speed."
+, mov_impact_01, 40, element.poison, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Juggle", "A fun trick turned into a capable attack. Power doubles with a held item."
+, mov_impact_01, 40, element.light, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Curl Up", "Assume's a ball formation, it raises the user's defense."
+, mov_impact_01, 40, element.light, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Mighty Mash", "A heroic show of strength, worthy of a protagonist. It may raise the user's attack."
+, mov_impact_01, 40, element.fight, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Bright Claws", "A flurry of flashy slashes."
+, mov_impact_01, 40, element.light, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Stampede", "Bulldozes anything in their path, it raises the user's speed."
+, mov_impact_01, 40, element.light, type.physical, 100, 40);
+
+BUILD_MOVEDEX_ARRAY("Light Lasso", "Ties the enemy with binding energy, it may cause paralysis."
+, mov_impact_01, 40, element.electric, type.physical, 100, 40);
+
+
 
 #endregion
 
 #region Grass Moves
 BUILD_MOVEDEX_ARRAY("Twig Blade",	"Small, but pointy, it has a high chance of a critical hit",
-	spr_impact_01,	40,	element.grass,	type.physical,	100,	40, move.hi_crit, 1);
+	mov_grass_strike,	40,	element.grass,	type.physical,	100,	40, move.hi_crit, 1);
 BUILD_MOVEDEX_ARRAY("Healing Herbs",	"A blend of healthy herbs, it heals allies on the field",
-	spr_impact_01,	-1,	element.grass,	type.support,	100,	40);
+	mov_impact_01,	-1,	element.grass,	type.support,	100,	40);
 BUILD_MOVEDEX_ARRAY("Sticky Sap",	"Covers the enemy in sap, lowering their speed",
-	spr_impact_01,	-1,	element.grass,	type.support,	100,	30, move.chance_stat, 100, move.e_spd, -2);
+	mov_impact_01,	-1,	element.grass,	type.support,	100,	30, move.chance_stat, 100, move.e_spd, -2);
 BUILD_MOVEDEX_ARRAY("Leaf Spin",	"Twirls a leaf, creating a sharp whirling blade",
-	spr_impact_01,	60,	element.grass,	type.physical,	100,	25)
+	mov_impact_01,	60,	element.grass,	type.physical,	100,	25)
 #endregion
 
 #region Water Moves
 BUILD_MOVEDEX_ARRAY("Splash Bash",	"A splash that packs a punch, may cause the enemy to flinch",
-	spr_bubble_burst,	35,	element.water,	type.physical,	95,	30, move.chance_flinch, 20);
+	mov_bubble_burst,	35,	element.water,	type.physical,	95,	30, move.chance_flinch, 20);
 BUILD_MOVEDEX_ARRAY("High Tide",	"Floods the battlefield, increasing the speed of water element Dokimon",
-	spr_bubble_burst,	-1,	element.water,	type.support,	100,	40, move.chance_stat, 100, move.spd, 2);
+	mov_bubble_burst,	-1,	element.water,	type.support,	100,	40, move.chance_stat, 100, move.spd, 2);
 #endregion
 
 #region Fire Moves
 BUILD_MOVEDEX_ARRAY("Sizzle",	"A tiny fireball that singes the target, it may cause burn",
-	spr_smolder,	-1,	element.fire,	type.physical,	100,	40);
+	mov_smolder,	-1,	element.fire,	type.physical,	100,	40);
 BUILD_MOVEDEX_ARRAY("Ignite",	"Bursts the user's surroundings into flames, the opponent may catch on fire",
-	spr_impact_01,	60,	element.fire,	type.magical,	100,	20, move.chance_status, 30, move.status, status.burn);
+	mov_impact_01,	60,	element.fire,	type.magical,	100,	20, move.chance_status, 30, move.status, status.burn);
 BUILD_MOVEDEX_ARRAY("Searing Claws",	"Launches an attack with strong, flaming claws. It may cause burn",
-	spr_impact_01,	95,	element.fire,	type.physical,	95,		15, move.chance_status, 30, move.status, status.burn);
+	mov_impact_01,	95,	element.fire,	type.physical,	95,		15, move.chance_status, 30, move.status, status.burn);
 BUILD_MOVEDEX_ARRAY("Wildfire",	"A destructive wave of fire, the user takes recoil damage",
-	spr_impact_01,	120,	element.fire,	type.magical,	100,	15, move.recoil, 1, move.recoil_amnt, 25);
+	mov_fireblast,	120,	element.fire,	type.magical,	100,	15, move.recoil, 1, move.recoil_amnt, 25);
 #endregion
 
 #region Electric Moves
 BUILD_MOVEDEX_ARRAY("Static Shock",	"Shoots a small shock through their opponent, it may cause paralysis",
-	spr_impact_01,	20,	element.electric,	type.magical,	100,	40, move.chance_status, 100, move.status, status.paralyze);
+	mov_impact_01,	20,	element.electric,	type.magical,	100,	40, move.chance_status, 100, move.status, status.paralyze);
 BUILD_MOVEDEX_ARRAY("Lightning",	"Zaps their opponent with electricity, it may cause paralysis",
-	spr_impact_01,	50,	element.electric,	type.magical,	95,		40, move.chance_status, 10, move.status, status.paralyze);
+	mov_impact_01,	50,	element.electric,	type.magical,	95,		40, move.chance_status, 10, move.status, status.paralyze);
 BUILD_MOVEDEX_ARRAY("Battery Bolt",	"Blasts their opponent with a powerful charge, it may cause paralysis",
-	spr_impact_01,	-1,	element.electric,	type.physical,	100,	40);
+	mov_impact_01,	-1,	element.electric,	type.physical,	100,	40);
 BUILD_MOVEDEX_ARRAY("Overclock ",	"Pushing its electric power past the limits, the user's magical attack sharply increases",
-	spr_impact_01,	-1,	element.electric,	type.support,	100,	20, move.chance_stat, -1, move.mgk_atk, 2);
+	mov_impact_01,	-1,	element.electric,	type.support,	100,	20, move.chance_stat, -1, move.mgk_atk, 2);
 #endregion
 
 #region Flying Moves
 BUILD_MOVEDEX_ARRAY("Swoop",	"Swoops at the opponent, scratching them",
-	spr_impact_01,	35,	element.flying,	type.physical,	100,	30);
+	mov_impact_01,	35,	element.flying,	type.physical,	100,	30);
 BUILD_MOVEDEX_ARRAY("Talon Slash",	"Slices at the opponent with sharp claws",
-	spr_impact_01,	60,	element.flying,	type.physical,	100,	20);
+	mov_impact_01,	60,	element.flying,	type.physical,	100,	20);
 BUILD_MOVEDEX_ARRAY("Beak Bomb",	"Creates an explosive blast with their beak, it may cause burn",
-	spr_impact_01,	80,	element.flying,	type.physical,	90,		10, move.chance_status, 30, move.status, status.burn);
+	mov_impact_01,	80,	element.flying,	type.physical,	90,		10, move.chance_status, 30, move.status, status.burn);
 #endregion
 
 #region Fighting Moves
 BUILD_MOVEDEX_ARRAY("Quick Jab",	"An agile attack at their opponent, it usually hits first",
-	spr_impact_01,	50,	element.fight,		type.physical,	100,	30, move.priority, 1);
+	mov_impact_01,	50,	element.fight,		type.physical,	100,	30, move.priority, 1);
 BUILD_MOVEDEX_ARRAY("Combo Hit",	"A flurry of quick punches, it hits 2-5 times",
-	spr_impact_01,	15,	element.fight,		type.physical,	100,	20);
+	mov_impact_01,	15,	element.fight,		type.physical,	100,	20);
 BUILD_MOVEDEX_ARRAY("Heavy Swing",	"A powerful blow, it leaves both fighters with weakened defense",
-	spr_impact_01,	85,	element.fight,		type.physical,	100,	20, move.chance_stat, 100, move.def, -1, move.e_def, -1);
+	mov_impact_01,	85,	element.fight,		type.physical,	100,	20, move.chance_stat, 100, move.def, -1, move.e_def, -1);
 BUILD_MOVEDEX_ARRAY("Teardown",	"Destroying anything in their way, the user even attacks through protect",
-	spr_impact_01,	65,	element.fight,		type.physical,	100,	25);
+	mov_impact_01,	65,	element.fight,		type.physical,	100,	25);
 #endregion
 
 #region Dark Moves
 BUILD_MOVEDEX_ARRAY("Snicker",	"Smiles sinisterly, striking fear in their target. It harshly lowers the opponents attack",
-	spr_impact_01,	20,	element.dark,		type.magical,	100,	25, move.chance_stat, 100, move.e_atk, -2);
+	mov_impact_01,	20,	element.dark,		type.magical,	100,	25, move.chance_stat, 100, move.e_atk, -2);
 BUILD_MOVEDEX_ARRAY("Low Blow",	"A shady attack is never expected. It has a chance to make the opponent flinch",
-	spr_impact_01,	80,	element.dark,		type.physical,	100,	15, move.chance_flinch, 20);
+	mov_impact_01,	80,	element.dark,		type.physical,	100,	15, move.chance_flinch, 20);
 BUILD_MOVEDEX_ARRAY("Sly Shot",	"Makes a sneak attack on their opponent, it has a high chance of a critical hit",
-	spr_impact_01,	70,	element.dark,		type.physical,	100,	20, move.hi_crit, 1);
+	mov_impact_01,	70,	element.dark,		type.physical,	100,	20, move.hi_crit, 1);
 #endregion
 
 #region Poison Moves
 BUILD_MOVEDEX_ARRAY("Ink Spray",	"Blinds their opponent with ink, lowering their accuracy",
-	spr_impact_01,	50,	element.poison,		type.magical,	70,		30, move.chance_stat, 40, move.e_acc, -1);
+	mov_impact_01,	50,	element.poison,		type.magical,	70,		30, move.chance_stat, 40, move.e_acc, -1);
 BUILD_MOVEDEX_ARRAY("Plague",	"A vile concoction, the user poison's their opponent",
-	spr_impact_01,	-1,	element.poison,		type.support,	75,		30, move.chance_status, 100, move.status, status.poison);
+	mov_impact_01,	-1,	element.poison,		type.support,	75,		30, move.chance_status, 100, move.status, status.poison);
 #endregion
 
 #region Dragon Moves
 BUILD_MOVEDEX_ARRAY("Dragon Fire",	"Breathes the flames of a dragon, it may cause burn",
-	spr_impact_01,	100,element.dragon,		type.magical,	85,	10, move.chance_status, 20, move.status, status.burn);
+	mov_impact_01,	100,element.dragon,		type.magical,	85,	10, move.chance_status, 20, move.status, status.burn);
 #endregion
 
 #region Fairy Moves
 BUILD_MOVEDEX_ARRAY("Peek-a-boo",	"An ancient technique, it usually hits first",
-	spr_impact_01,	40,	element.fairy,		type.magical,	100,	30, move.priority, 1);
+	mov_impact_01,	40,	element.fairy,		type.magical,	100,	30, move.priority, 1);
 BUILD_MOVEDEX_ARRAY("Simple Spell",	"A simple spell, yet quite unbreakable",
-	spr_impact_01,	50,	element.fairy,		type.magical,	100,	30);
+	mov_impact_01,	50,	element.fairy,		type.magical,	100,	30);
 BUILD_MOVEDEX_ARRAY("Sweet Song",	"Sings to their opponent with grace, it may leave them infatuated",
-	spr_impact_01,	80,	element.fairy,		type.magical,	100,	15, move.chance_stat, 20, move.mgk_atk, 1);
+	mov_impact_01,	80,	element.fairy,		type.magical,	100,	15, move.chance_stat, 20, move.mgk_atk, 1);
 BUILD_MOVEDEX_ARRAY("Heavy Heart",	"Slams their opponent with the weight of love",
-	spr_impact_01,	90,	element.fairy,		type.physical,	100,	20);
+	mov_impact_01,	90,	element.fairy,		type.physical,	100,	20);
 #endregion
+
+
 
 /*Copy and paste the below two lines and fill in the data to create new moves
 BUILD_MOVEDEX_ARRAY("",	"",

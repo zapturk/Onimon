@@ -2,10 +2,7 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "obj_move",
-  "spriteId": {
-    "name": "spr_scratch",
-    "path": "sprites/spr_scratch/spr_scratch.yy",
-  },
+  "spriteId": null,
   "solid": false,
   "visible": true,
   "managed": true,

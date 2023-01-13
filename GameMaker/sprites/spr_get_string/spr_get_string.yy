@@ -5,7 +5,7 @@
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
-  "origin": 4,
+  "origin": 1,
   "preMultiplyAlpha": false,
   "edgeFiltering": false,
   "collisionTolerance": 0,
@@ -59,7 +59,7 @@
     "backdropXOffset": 0.0,
     "backdropYOffset": 0.0,
     "xorigin": 72,
-    "yorigin": 22,
+    "yorigin": 0,
     "eventToFunction": {},
     "eventStubScript": null,
   },
@@ -68,7 +68,7 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "User Interface",
-    "path": "folders/Sprites/User Interface.yy",
+    "name": "MonMae",
+    "path": "folders/Sprites/MonMae.yy",
   },
 }

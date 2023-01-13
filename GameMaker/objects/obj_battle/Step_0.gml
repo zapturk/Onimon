@@ -164,7 +164,6 @@ if menu == battl.mons{
 				break;
 			case 1:
 				menu = battl.info;
-				sel[2] = 0;
 				//sel[0] = 0;
 				exit;
 			}

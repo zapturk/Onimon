@@ -6,6 +6,8 @@ extends Area2D
 @export var spawnLocation: Vector2 = Vector2(0, 0)
 @export var spawnDirection: Vector2 = Vector2(0, 0)
 
+var active: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if player == null:
@@ -14,4 +16,9 @@ func _ready():
 	
 
 func enteredDoor():
-	get_node(NodePath("/root/SceneManager")).transitionToScreen(nextScenePath, spawnLocation, spawnDirection)
+	if active:
+		get_node(NodePath("/root/SceneManager")).transitionToScreen(nextScenePath, spawnLocation, spawnDirection)
+
+
+func _on_body_entered(body):
+	active = true

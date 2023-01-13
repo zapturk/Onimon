@@ -138,9 +138,9 @@ func Move(delta):
 			position = initialPosition + (TILE_SIZE * inputDir)
 			percentMovedToNextTile = 0.0
 			isMoving = false
-			stopInput = true
-			$AnimationPlayer.play("Disappear")
-			EnteredDoor()
+			#stopInput = true
+			#$AnimationPlayer.play("Disappear")
+			#EnteredDoor()
 		else:
 			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	

@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_player",
   "spriteId": {
-    "name": "spr_player_walk_d",
-    "path": "sprites/spr_player_walk_d/spr_player_walk_d.yy",
+    "name": "spr_player_coll",
+    "path": "sprites/spr_player_coll/spr_player_coll.yy",
   },
   "solid": false,
   "visible": true,

@@ -60,8 +60,8 @@ if (file_exists("save.sav")){
 		
 	ini_close();
 	
-	//Load our every time start-up settings from this function if we've set this function to 1 (true)
-	debug_settings()
+	//Reun debug setting stuff
+	debug_settings();
 	
 	//Go to current residing room
 	if room_exists(curr_rm) room_goto(curr_rm);

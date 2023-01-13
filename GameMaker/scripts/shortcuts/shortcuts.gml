@@ -518,12 +518,13 @@ function paint_healthbar(){
 ///@arg y
 ///@arg sprite
 ///@arg percentage/decimal
+///@arg frame
 
 //Get current health percentage as a decimal and multiplay it by the sprites width
 var width = round(sprite_get_width(argument[2]) * argument[3]);
-
-draw_sprite_part(argument[2], 0, 0, 0, width, sprite_get_height(argument[2]), argument[0], argument[1]);
-	
+if argument_count == 5 draw_sprite_part(argument[2], argument[4], 0, 0, width, sprite_get_height(argument[2]), argument[0], argument[1]);
+else if argument_count == 4 draw_sprite_part(argument[2], 0, 0, 0, width, sprite_get_height(argument[2]), argument[0], argument[1]);
+return 0;
 }
 
 #region Less Commonly Used shortcuts

@@ -169,22 +169,30 @@ if pause == _pause.party{
 	//spr_party_monsters frame macros	
 	alpha(0.66);
 	color(c_black);
-	format(c_white, 1);
-	paint(x, y, spr_party);
+	format(col[COL_PURPLE, 3], 1);
 	var xx = x-80, yy = y-_cam_height/2;
 	
-	if sel[2] == -1 or sel[2] == 2{
-		//paint(xx, y-16+_cam_height/2, spr_controls);
-		}
+	draw_sprite_tiled(spr_purple_doublesquare, 0, xx + scrolling_bg_x, yy + scrolling_bg_y);
+	paint(x, y, spr_party);
+	
+	if sel[2] == -1 or sel[2] == 2 text(xx-38, yy+131, "Choose a Dokimon");
 	else{
-		paint(x, y, spr_party, 1);
-		paint(x-62+(sel[2]*66), y-13+_cam_height/2, spr_cursor_w);
+		text(xx-27, yy+131, "Switch   Info");
+		paint(x-116+(sel[2]*49), y-17+_cam_height/2, spr_cursor_w, 0, 1, 1, col[COL_PURPLE, 3]);
 		}
+	color();
+
+	//Slowly scroll the looping background 
+	scrolling_bg_x += 0.15;
+	scrolling_bg_y += 0.15;
 		
 	//Draw Party
 	format(c_white, 1, fn_yana5x5, 0, 1);
 	for (var i = 0, ii = 0; i < 6; i++;){
-		var xx = x-88, yy = y - _cam_height/2 + 2;
+		var xx = x-118, yy = y - _cam_height/2 - 12;
+		
+		//Elevate the monster we're hovering
+		if sel[1] == i yy -= 2;
 		
 		//Draw background box
 		var o = 0;
@@ -194,45 +202,71 @@ if pause == _pause.party{
 		if monsters[i, 0] != -1{
 			var num =  monsters[i, 0], name = mondex[monsters[i, 0], dex.name],
 			level = monsters[i, party.level], hp = string(round(monsters[i, party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, i));
-			var _healthbar = hp / max_hp;
+			var x_spacer = 120, y_spacer = 39, _healthbar = hp / max_hp, xp = string(round(monsters[i, party.exp])),
+			max_xp = string(GET_STAT(PLAYER, MAX_EXP_SUM, i));
+			var _expbar = xp / max_xp;
 			
+			alpha(0.8);
 			//Draw the monster and their name if one exists in this slot
 			if float_mon != -1{
 				if float_mon == i{
-					if press(ENTER){
-						float_xpos = o;
-						float_ypos = ii;
-						}
-					if sel[1] == i paint(xx+1+(float_xpos*96), yy+18+(float_ypos*36), spr_party_monbox, MOVIN);
-					else paint(xx+42+(o*96), yy+42+(ii*36), spr_party_monbox, MOVTO);
+					if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVIN);
+					else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVTO);
 					}
 				else{
-				if sel[1] == i paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, MOVIN);
-				else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, FILLED);
+				if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVIN);
+				else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, FILLED);
 				}
 			}
 			else{
-				if sel[1] == i paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, SELCT);
-				else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, FILLED);	
+				if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, SELCT);
+				else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, FILLED);	
 				}
-			paint_from_index(xx+18+(o*96), yy+30+(ii*36)+mon_hop, spr_monsters_mini, num);
-			paint_healthbar(xx+46+(o*96), yy+42+(ii*36), spr_party_monbox_hp, _healthbar);
+			alpha();
+			paint_from_index(xx+22+(o*x_spacer), yy+30+(ii*y_spacer)+mon_hop, spr_monsters_mini, num);
 			
-			format(col[COL_RED, 3], -1, -1, 2);
-			text(xx+84+(o*96), yy+26 + (ii*36), name);
-			halign(0);
+			paint(xx+46+(o*x_spacer), yy+35+(ii*y_spacer), spr_party_monbox_hp);
+			paint_healthbar(xx+46+(o*x_spacer), yy+35+(ii*y_spacer), spr_party_monbox_hp, _healthbar, 1);
 			
-			text(xx+8+(o*96), yy+44 + (ii*36), "Lv" + string(level));
+			//paint(xx+46+(o*x_spacer), yy+40+(ii*y_spacer), spr_party_monbox_xp);
+			paint_healthbar(xx+46+(o*x_spacer), yy+40+(ii*y_spacer), spr_party_monbox_xp, _expbar, 1);
 			
 			format(c_white, -1, -1, 2);
-			text(xx+78+(o*96), yy+36 + (ii*36), hp + "/" + max_hp);
+			text(xx+86+(o*x_spacer), yy+30 + (ii*y_spacer), name);
+			halign(0);
+			
+			text(xx+8+(o*x_spacer), yy+44 + (ii*y_spacer), "Lv" + string(level));
+			
+			format(c_white, -1, -1, 2);
+			text(xx+103+(o*x_spacer), yy+6+y_spacer + (ii*y_spacer), hp + "/" + max_hp);
 			halign(0);
 			}
-		else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, EMPTY);
+		else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, EMPTY);
 		if divisible_by(i+1, 2) ii++;
 		}
 	}
+
+if pause == _pause.inventory{
+	var cx = x - _cam_width/2, cy = y - _cam_height/2;
+	draw_sprite_tiled(spr_looping_backpack, 0, cx + scrolling_bg_x, cy + scrolling_bg_y);
+	paint(cx, cy, spr_inventory);
 	
+	//Slowly scroll the looping background 
+	scrolling_bg_x += 0.15;
+	scrolling_bg_y += 0.15;
+	
+	var o = 0;
+	for (var i = 0; i < 6; i++;){
+		if monsters[i, 0] != -1{
+			paint_from_index(cx+12 + ((i-(o*3))*20), cy+62 + (o*20), spr_monsters_mini, monsters[i, 0]);
+			if i == 2 o++;
+			}
+		}
+	
+	
+
+	}
+
 if pause == _pause.info{
 	var num =  monsters[sel[1], 0], name = mondex[monsters[sel[1], 0], dex.name], level = string(monsters[sel[1], party.level]);
 	var cx = x - _cam_width/2, cy = y - _cam_height/2, mon_offset = 56/2;
@@ -241,7 +275,17 @@ if pause == _pause.info{
 		if sel[3] == 0 paint(x, y, spr_monster_info, sel[2]);
 		else paint(x, y, spr_monster_info, 2);
 		
-		paint_from_index(cx+mon_offset+12, cy+mon_offset+42, spr_monsters_battle, monsters[sel[1], 0]);
+		paint_from_index(cx+mon_offset+12, cy+mon_offset+42+hobble[0], spr_monsters_battle, monsters[sel[1], 0]);
+		timer++;
+		if timer >= 10{
+			hobble[0] += incr[0];
+			if abs(hobble[0]) == 2 incr[0] = -incr[0];
+			timer = 0;
+			}
+		
+		//Draw the monsters healthbar based on it's current health
+		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), _healthbar = hp / max_hp;
+		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, 0);
 		
 		format(c_white, 1, fn_yana5x5, 2);
 		text(cx+67, cy+23, name);
@@ -254,6 +298,7 @@ if pause == _pause.info{
 		
 	
 	halign(2);
+	//If we're moving a monsters starts
 	if sel[2] == 0{
 		//Define local variables for the information we'll be drawing to the screen
 		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), atk = string(GET_STAT(PLAYER, ATTACK_SUM, sel[1])),
@@ -309,6 +354,8 @@ if pause == _pause.info{
 		#endregion
 		
 		}
+	
+	//If we're viewing a monsters moves
 	if sel[2] == 1{
 		
 		cx+=100;
@@ -375,10 +422,13 @@ if pause == _pause.info{
 		cy+=35;
 		halign(1);
 		valign(0);
-		var move_desc = movedex[monsters[sel[1], (party.move1)], move.description];
+		if sel[3] == 0 var move_desc = movedex[monsters[sel[1], party.move1], move.description];
+		else var move_desc = movedex[monsters[sel[1], party.move1+sel[3]-1], move.description];
 		text(cx, cy, move_desc, 230);
 		valign(1);
 		}
+	
+	//If we're viewing a monsters movepools (assigning new moves)
 	if sel[2] == 2{
 	
 		//Reposition
@@ -479,6 +529,19 @@ if pause == _pause.info{
 if pause == _pause.idcard{
 	var cx = x - _cam_width/2, cy = y - _cam_height/2;
 	paint(cx, cy, spr_trainer_idcard);
+	
+	//Draw our players current trainer information
+	paint_from_index(cx+199, cy+58, spr_trainers_battle, obj_player.playable_character);
+	format(col[COL_BLUE, 3], 1, fn_yana, 0);
+	text(cx+62, cy+25, player_name);
+	
+	//Draw 16x16 monsters at the bottom
+	for (var i = 0; i < 6; i++;){
+		if monsters[i, 0] != -1{
+			paint_from_index(cx+63 + (i * 26), cy+114, spr_monsters_mini, monsters[i, 0]);
+			}
+		}
+	
 	}
 	
 if pause == _pause.pc{

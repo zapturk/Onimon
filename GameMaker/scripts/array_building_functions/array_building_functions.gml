@@ -33,6 +33,7 @@ function BUILD_MONDEX_ARRAY(){
 if is_undefined(mondex){
 	mondex[0, dex.sub_descrip] = "";
 	mondex[0, dex.descrip] = "";
+	mondex[0, dex.evolve] = 0;
 	
 	for (var i = 0; i < argument_count; i++;){
 		mondex[0, i] = argument[i];
@@ -44,6 +45,7 @@ else{
 	//Set description and sub-description to "" (empty) just in case we don't have them (to avoid crashes later)
 	mondex[m, dex.sub_descrip] = "";
 	mondex[m, dex.descrip] = "";
+	mondex[m, dex.evolve] = 0;
 	
 	//Assign the data from 
 	for (var i = 0; i < argument_count; i++;){
@@ -87,7 +89,7 @@ function BUILD_MOVEDEX_ARRAY_EXT(){
 ///@arg Chance_status		This is used for, "Chance to leave a burn" and etc, Should be a value between 1 and 100
 ///@arg Status				What status effect we should apply (0 if none)
 	
-///@arg Chance_flinch				This is used for flinching only, Should be a value between 1 and 100
+///@arg Chance_flinch		This is used for flinching only, Should be a value between 1 and 100
 ///@arg Flinch				0 or 1 (True or False) - If the enemy flinches, there'll be unable to move that turn
 ///@arg Hi-Crit				0 or 1 (True or False) - If true, crit chance turns into 35% chance instead of 10% chance
 
@@ -129,7 +131,7 @@ for (var i = 0; i < 37; i++;){
 	}
 movedex[m, move.name]			= "Name";					//Default Name
 movedex[m, move.description]	= "Description";			//Default Description
-movedex[m, move.sprite]			= spr_scratch;				//Default Animation
+movedex[m, move.sprite]			= mov_impact_01;			//Default Animation
 movedex[m, move.animation]		= move_ani.over_enemy;		//Default Animation
 movedex[m, move.power]			= 80;						//Default Power
 movedex[m, move.element]		= element.light;			//Default Element
@@ -171,8 +173,8 @@ function BUILD_MOVEDEX_ARRAY(){
 
 
 //How to use:
-//BUILD_MOVEDEX_ARRAY("Tackle",	"",		spr_impact_01,	30,		element.light,	type.physical, 100,	40);
-//BUILD_MOVEDEX_ARRAY("Ember",	"",		spr_fireblast,	40,		element.fire,	type.magic,		95,		35,		move.chance1, 10, move.status, status.burn);
+//BUILD_MOVEDEX_ARRAY("Tackle",	"",		mov_impact_01,	30,		element.light,	type.physical, 100,	40);
+//BUILD_MOVEDEX_ARRAY("Ember",	"",		mov_fireblast,	40,		element.fire,	type.magic,		95,		35,		move.chance1, 10, move.status, status.burn);
 
 //As you can see, "Tackle" uses the bare minimum needed for a move since it has no additional effects.
 //Ember, on the other hand, uses the bare minimum + "move.chance 10%" + "move.status BURN" to make it so that the move has a 10% chance to burn on use

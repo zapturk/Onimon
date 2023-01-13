@@ -224,6 +224,7 @@ function GET_STAT(){
 #macro MON_MANA_04		14
 #macro MON_MANAPOOL		14
 #macro MON_STATUS		16
+#macro MAX_EXP_SUM		17
 
 
 if argument_count == 2{
@@ -246,6 +247,7 @@ if argument_count == 2{
 		case 14:	return monsters[battler, party.mana4];
 		case 15:	return monsters[battler, party.manapool];
 		case 16:	return monsters[battler, party.status];
+		case 17:	return ((monsters[battler, party.level] * 10)-1);
 		}
 	if argument[1] == MAX_HEALTH_SUM var STAT = ((((BASE * 2) + IV + (floor(EV/4))) * LVL) / 100 + LVL + 10);
 	else var STAT = ((((BASE * 2) + IV + (floor(EV/4))) * LVL) / 100 + 5);	//This doesn't include NATURE, we'll need to add this later
@@ -298,6 +300,7 @@ if argument_count == 3{
 		case 14: return monsters[argument[2], party.mana4];
 		case 15: return monsters[argument[2], party.manapool];
 		case 16: return monsters[argument[2], party.status];
+		case 17: return ((monsters[argument[2], party.level] * 10)-1);
 		}
 	if argument[1] == MAX_HEALTH_SUM var STAT = ((((BASE * 2) + IV + (floor(EV/4))) * LVL) / 100 + LVL + 10);
 	else var STAT = ((((BASE * 2) + IV + (floor(EV/4))) * LVL) / 100 + 5);	//This doesn't include NATURE, we'll need to add this later
@@ -428,35 +431,44 @@ else{
 return 0;
 }
 
-function GET_MOVE_NAME(){
+function GET_MOVE_STRING(){
 ///@arg move_number
 ///@arg move_data
 
 switch argument[1]{
+
+	case MOVE_SPRITE:
+		return (sprite_get_name(movedex[argument[0], move.sprite]));
+	
 	case MOVE_ELEMENT:
-		var move_element = movedex[argument[1], move.element];
+		var move_element = (movedex[argument[0], move.element]);
 		switch (move_element){
-			case element.fire:		return "Fire";
-			case element.grass:		return "Grass";
-			case element.water:		return "Water";
-			case element.electric:	return "Electric";
-			case element.dark:		return "Dark";
-			case element.light:		return "Light";
-			case element.flying:	return "Flying";
-			case element.poison:	return "Poison";
-			case element.dragon:	return "Dragon";
-			case element.fairy:		return "Fairy";
-			default: return "Move Element Error";
+			case element.fire:			return "Fire";
+			case element.grass:			return "Grass";
+			case element.water:			return "Water";
+			case element.electric:		return "Electric";
+			case element.dark:			return "Dark";
+			case element.light:			return "Light";
+			case element.flying:		return "Flying";
+			case element.fight:			return "Fighting";
+			case element.poison:		return "Poison";
+			case element.dragon:		return "Dragon";
+			case element.fairy:			return "Fairy";
+			case element.ghost:			return "Ghost";
+			case element.ice:			return "Ice";
+			default:					return "Element Error";
 			}
+			
 	case MOVE_TYPE:
-		var move_type = movedex[argument[1], move.type];
+		var move_type = movedex[argument[0], move.type];
 		switch (move_type){
-			case type.support:	return "Support";
-			case type.physical: return "Physical";
-			case type.magical:	return "Magic";
-			default: return "Move Type Error";
+			case type.physical:		return "Physical";
+			case type.magical:		return "Magic";
+			case type.support:		return "Support";
+			default:				return "Move Type Error";
 			}
-	default: return 0;
+			
+	default: return "String Return Error";
 	}
 
 }
@@ -477,7 +489,7 @@ function GET_DEX(){
 #macro DEX_SPEED			6
 #macro DEX_ELEMENT_1		7
 #macro DEX_ELEMENT_2		8
-#macro DEX_ABILITY			9
+#macro DEX_EVOLVE			9
 #macro DEX_CAPTURE_R8		10
 #macro DEX_SUB_DESCR		11
 #macro DEX_DESCRIPTION		12

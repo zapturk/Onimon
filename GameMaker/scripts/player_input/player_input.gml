@@ -480,10 +480,77 @@ if press(vk_anykey){
 		case ord("X"): _key = "X"; break;
 		case ord("Y"): _key = "Y"; break;
 		case ord("Z"): _key = "Z"; break;
-		case ord("."): _key = "."; break;
-		case ord(","): _key = ","; break;
-		case ord("-"): _key = "-"; break;
-		case ord(" "): _key = " "; break;
+		case ord("1"): _key = "1"; break;
+		case ord("2"): _key = "2"; break;
+		case ord("3"): _key = "3"; break;
+		case ord("4"): _key = "4"; break;
+		case ord("5"): _key = "5"; break;
+		case ord("6"): _key = "6"; break;
+		case ord("7"): _key = "7"; break;
+		case ord("8"): _key = "8"; break;
+		case ord("9"): _key = "9"; break;
+		case ord("0"): _key = "0"; break;
+		
+		//Special Characters
+        case 222: _key = "'"; break;
+        case 190: _key = "."; break;
+        case 188: _key = ","; break;
+        case 109:
+        case 189: _key = "-"; break;
+        case 32: _key = " "; break;
+        case 191: _key = "?"; break; 
+        case vk_decimal: _key = "."; break;
+		}
+	}
+else return _arg;
+	
+var _str;
+var _len = string_length(_arg)+1;
+
+if _key != ""{
+	//Check for caps
+	if !held(vk_shift) _key = string_lower(_key);
+
+	//Add text
+	if _len < _limit{
+		_str = string_insert(_key, _arg, _len);
+		return _str;
+		}
+	else return _arg;
+	}
+else{
+	if press(vk_backspace){
+		_str = string_delete(_arg, _len-1, 1);
+		return _str;
+		}
+	else return _arg;
+	}
+}
+
+function get_number(argument0, argument1){
+//Used for getting a player's string input, to set a name or anything else
+
+///@arg string
+///@arg limit
+
+//How to use:
+//name = get_name(name, 8);
+
+var _arg = argument0, _limit = argument1, _key = "";
+
+//Check for pressed event
+if press(vk_anykey){
+	switch (keyboard_key){
+		case ord("1"): _key = "1"; break;
+		case ord("2"): _key = "2"; break;
+		case ord("3"): _key = "3"; break;
+		case ord("4"): _key = "4"; break;
+		case ord("5"): _key = "5"; break;
+		case ord("6"): _key = "6"; break;
+		case ord("7"): _key = "7"; break;
+		case ord("8"): _key = "8"; break;
+		case ord("9"): _key = "9"; break;
+		case ord("0"): _key = "0"; break;
 		}
 	}
 else return _arg;
