@@ -3364,8 +3364,8 @@ layer_2/tile_data = PackedInt32Array(65538, 2686976, 13, 0, 2293760, 13, 65536, 
 [node name="Player" parent="." instance=ExtResource("2_4ox2n")]
 position = Vector2(96, 112)
 
-[node name="roomExit" parent="." instance=ExtResource("3_5hc2e")]
-position = Vector2(96, 128)
+[node name="ExitHouse" parent="." instance=ExtResource("3_5hc2e")]
+position = Vector2(96, 127)
 nextScenePath = "res://Maps/Overworld.tscn"
 spawnLocation = Vector2(144, 112)
 spawnDirection = Vector2(0, 1)

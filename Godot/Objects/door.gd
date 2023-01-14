@@ -11,6 +11,7 @@ func _ready():
 	if player == null:
 		player = get_parent().get_node("Player")
 	player.connect("player_entered_door_signal", enteredDoor)
+	print(nextScenePath)
 	
 
 func enteredDoor():
