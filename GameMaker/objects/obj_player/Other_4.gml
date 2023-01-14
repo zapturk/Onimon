@@ -1,5 +1,6 @@
 if !instance_exists(obj_camera) create(x, y, obj_camera);
 
+//Just in case
 start_x = round(start_x/16)*16;
 start_y = round(start_y/16)*16;
 

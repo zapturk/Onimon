@@ -4,10 +4,47 @@ draw_message = "";
 
 if typing != -1{
 	if press(ESCAPE){
+	
+		//If we press escape, just leave the data unchanged and reset the editing values
 		instruction = -1;
 		user_string = -1;
 		typing = -1;
+		
 		}
+	exit;
+	}
+if editing_move_val != -1{
+	if press(ESCAPE){
+		
+		//If we press escape, just leave the data unchanged and reset the editing values
+		instruction = -1;
+		user_string = -1;
+		editing_move_val = -1
+		editing_move_exception = 0;
+		if editing_move_val == move.sprite ds_list_clear(move_sprites);
+		}
+	
+	if mouse(){
+		if editing_move_val == move.element{
+			for (var i = 0; i < 5; i++;){
+				for (var o = 0; o < 3; o++;){
+					
+					if point_in_rectangle(mouse_x, mouse_y, 68 + (i * 31), 75 + (o * 11), 96 + (i * 31), 84 + (o * 11)){
+						
+						//Set the moves new element to the one that we've clicked from the list
+						movedex[sel[2], sel[3]] = (i + (o * 5));
+							
+						instruction = -1;
+						user_string = -1;
+						editing_move_val = -1
+						editing_move_exception = 0;
+						break;
+						}
+					}
+				}
+			}
+		}
+	
 	exit;
 	}
 
@@ -22,6 +59,27 @@ if press(ord("F")){
 
 //Check for player mouse input on bottom panel at all times
 if mouse_x <= 16{
+	
+	//Check for player mouse input on load defaults button
+	if point_in_rectangle(mouse_x, mouse_y, 0, 16, 16, 32){
+	
+		if mouse(){
+			//Load save file
+			var file = "default.ini";	
+
+			ini_open(file);
+			for (var o = 0; o < array_length(mondex); o++;){
+				for (var i = 1; i < 10; i++;){
+					mondex[o, i] = ini_read_real("Monster_" + string(o), "Val" + string(i), 0);
+					}
+				mondex[o, 0] = ini_read_string("Monster_" + string(o), "Val" + string(0), "");
+				mondex[o, 11] = ini_read_string("Monster_" + string(o), "Val" + string(11), "");
+				mondex[o, 12] = ini_read_string("Monster_" + string(o), "Val" + string(12), "");
+				}
+			ini_close();
+			}
+		draw_message = "Load Default Save Data";
+		}
 	
 	//Check for player mouse input on close button
 	if point_in_rectangle(mouse_x, mouse_y, 0, 0, 16, 16){
@@ -73,6 +131,15 @@ if mouse_x <= 16{
 		draw_message = "Create backup save file";
 		}
 	
+	//Check for player mouse input on music button
+	if point_in_rectangle(mouse_x, mouse_y, 0, 112, 16, 128){
+		if mouse(){
+			if !audio_is_playing(snd_theme) audio_play_sound(snd_theme, 1, 1);
+			else audio_stop_all();
+			}
+		draw_message = "pause or play music";
+		}
+	
 	//Check for player mouse input on fullscreen button
 	if point_in_rectangle(mouse_x, mouse_y, 0, 128, 16, 144){
 		if mouse(){
@@ -92,14 +159,68 @@ if mouse() and mouse_y >= 144{
 	
 	for(var i = 0; i < 4; i++){
 		if point_in_rectangle(mouse_x, mouse_y, 16 + (i*64), 144, 16+64 + (i*64), 144+16){
-			menu = i;
 			break;
 			}
 		}
+	
+	switch (i){
+		case 0:
+			menu = 0;
+			image_speed = 0.075;
+			break;
+		case 1:
+			menu = 1;
+			break;
+		case 2:
+			menu = 3;
+			image_speed = 0.2;
+		}	
+	
 	}
 
 //Get mouse controls for on screen buttons right side
 if mouse() and mouse_x >= 256+16{
+
+	//Check for player mouse input on save button
+	if point_in_rectangle(mouse_x, mouse_y, 256+16, 64, 256+32, 80){
+		if mouse(){
+		
+			//Loop through the current mondex values and save them to a new ini file
+			ini_open("player_setup.ini");
+		
+			ini_write_real("Playable Character", "Num", playable_character);
+			ini_write_real("Animation Speeds", "Walk Speed", walk_spd);
+			ini_write_real("Animation Speeds", "Run Speed", run_spd);
+			ini_close();
+			
+			//Loop through the current mondex values and save them to a new ini file
+			ini_open("mondex.ini");
+			for (var o = 0; o < array_length(mondex); o++;){
+				for (var i = 1; i < 10; i++;){
+					ini_write_real("Monster_" + string(o), "Val" + string(i), mondex[o, i]);
+					}
+				ini_write_string("Monster_" + string(o), "Val" + string(0), mondex[o, 0]);
+				ini_write_string("Monster_" + string(o), "Val" + string(11), mondex[o, 11]);
+				ini_write_string("Monster_" + string(o), "Val" + string(12), mondex[o, 12]);
+				}
+			ini_close();
+
+			//Loop through the current movedex values and save them to a new ini file
+			ini_open("movedex.ini");
+			for (var o = 0; o < array_length(movedex); o++;){
+				for (var i = 3; i < array_length(movedex[0]); i++;){
+					ini_write_real("Move_" + string(o), "Val" + string(i), movedex[o, i]);
+					}
+				ini_write_string("Move_" + string(o), "Val" + string(0), movedex[o, 0]);
+				ini_write_string("Move_" + string(o), "Val" + string(1), movedex[o, 1]);
+				ini_write_string("Move_" + string(o), "Val" + string(2), sprite_get_name(movedex[o, 2]));
+				}
+			ini_close();
+			
+			}
+		audio_play_sound(snd_save, 1, 0);
+		flash = 1;
+		}
 
 	//Check for player mouse input on twitter button
 	if point_in_rectangle(mouse_x, mouse_y, 256+16, 112, 256+32, 128){
@@ -112,13 +233,21 @@ if mouse() and mouse_x >= 256+16{
 		}
 	}
 
+if menu == monmae._player{
+
+	//Check for player mouse input on save button
+	if point_in_rectangle(mouse_x, mouse_y, 256+16, 64, 256+32, 80){
+		draw_message = "save current player data";
+		}
+	}
 
 if menu == monmae._monsters{
 	
-	if press(DOWN) sel[1]++;
-	if sel[1] > 0{
-		if press(UP) sel[1]--;
-		}
+	if mouse_wheel_up() and sel[1] > 0 sel[1]--;
+	if mouse_wheel_down() and sel[1] < array_length(mondex)-1 sel[1]++;
+	
+	if press(DOWN) and sel[1] < array_length(mondex)-1 sel[1]++;
+	if press(UP) and sel[1] > 0 sel[1]--;
 	
 	if press(ENTER){
 		menu = monmae._monster_info;
@@ -146,19 +275,6 @@ if menu == monmae._monsters{
 			
 		//Check for player mouse input on save button
 		if point_in_rectangle(mouse_x, mouse_y, 256+16, 64, 256+32, 80){
-			if mouse(){
-				//Loop through the current mondex values and save them to a new ini file
-				ini_open("mondex.ini");
-				for (var o = 0; o < array_length(mondex); o++;){
-					for (var i = 1; i < 10; i++;){
-						ini_write_real("Monster_" + string(o), "Val" + string(i), mondex[o, i]);
-						}
-					ini_write_string("Monster_" + string(o), "Val" + string(0), mondex[o, 0]);
-					ini_write_string("Monster_" + string(o), "Val" + string(11), mondex[o, 11]);
-					ini_write_string("Monster_" + string(o), "Val" + string(12), mondex[o, 12]);
-					}
-				ini_close();
-				}
 			draw_message = "save current monster data";
 			}
 		
@@ -208,7 +324,7 @@ if menu == monmae._monsters{
 
 if menu == monmae._monster_info{
 	
-	if press(DOWN) sel[1]++;
+	if press(DOWN) and (sel[1] < array_length(mondex)-1) sel[1]++;
 	if sel[1] > 0{
 		if press(UP) sel[1]--;
 		}
@@ -217,7 +333,10 @@ if menu == monmae._monster_info{
 		menu = monmae._monster_info;
 		}
 	if press(ESCAPE) menu = monmae._monsters;
-	
+
+	if mondex[sel[1], dex.evolve] < 1 draw_message = "mon won't evo by leveling"
+	else draw_message = "mon will evolve at " + string(mondex[sel[1], dex.evolve]);
+
 	//Get mouse controls for on screen buttons
 	if mouse() and mouse_x >= 256+16{
 	
@@ -231,21 +350,6 @@ if menu == monmae._monster_info{
 		//Check for player mouse input on right arrows for incrementing monster num
 		if point_in_rectangle(mouse_x, mouse_y, 256+16, 48, 256+32, 64){
 			sel[1]++;
-			}
-		
-		//Check for player mouse input on save button
-		if point_in_rectangle(mouse_x, mouse_y, 256+16, 64, 256+32, 80){
-		
-			//Loop through the current mondex values and save them to a new ini file
-			var o = sel[1];
-			ini_open("mondex.ini");
-			for (var i = 1; i < 10; i++;){
-				ini_write_real("Monster_" + string(o), "Val" + string(i), mondex[o, i]);
-				}
-			ini_write_string("Monster_" + string(o), "Val" + string(0), mondex[o, 0]);
-			ini_write_string("Monster_" + string(o), "Val" + string(1), mondex[o, dex.sub_descrip]);
-			ini_write_string("Monster_" + string(o), "Val" + string(2), mondex[o,dex.descrip]);
-			ini_close();
 			}
 		
 		//Check for player mouse input on erase button
@@ -277,9 +381,192 @@ if menu == monmae._monster_info{
 				mondex[o, i] = ini_read_real("Monster_" + string(o), "Val" + string(i), 0);
 				}
 			mondex[o, 0] = ini_read_string("Monster_" + string(o), "Val" + string(0), "");
-			mondex[o, 11] = ini_read_string("Monster_" + string(o), "Val" + string(1), "");
-			mondex[o, 12] = ini_read_string("Monster_" + string(o), "Val" + string(2), "");
+			mondex[o, 11] = ini_read_string("Monster_" + string(o), "Val" + string(11), "");
+			mondex[o, 12] = ini_read_string("Monster_" + string(o), "Val" + string(12), "");
 			ini_close();
 			}
 		}
+	}
+
+if menu == monmae._monster_moves{
+	
+	if press(ENTER){
+		menu = monmae._monster_moves_info;
+		clear(ENTER);
+		sel[3] = 0;
+		}
+
+	if mouse_wheel_up() and sel[2] > 0 sel[2]--;
+	if mouse_wheel_down() and sel[2] < array_length(movedex)-1 sel[2]++;
+
+	if press(DOWN) and sel[2] < array_length(movedex)-1 sel[2]++;
+	if sel[2] > 0{
+		if press(UP) sel[2]--;
+		}
+	
+	if mouse(){
+		//Check for -10
+		if point_in_rectangle(mouse_x, mouse_y, 214, 6, 223, 17){
+			sel[2] -= 10;
+			if sel[2] < 0 sel[2] = 0;
+			}
+		//Check for +10
+		if point_in_rectangle(mouse_x, mouse_y, 226, 6, 235, 17){
+			sel[2] += 10;
+			if sel[2] > array_length(movedex) sel[2] = (array_length(movedex)-1);
+			}
+		
+		//Check for "Add New Move"
+		if point_in_rectangle(mouse_x, mouse_y, 254, 10, 270, 18){
+			sel[2] = (array_length(movedex));
+			BUILD_MOVEDEX_ARRAY("New Move",	"New Move Description", mov_impact_01,	40,	element.light,	type.physical,	95,	35);
+			}
+		
+		//Check for "Top" and "Bot"
+		if point_in_rectangle(mouse_x, mouse_y, 254, 25, 270, 33) sel[2] = 0;
+		if point_in_rectangle(mouse_x, mouse_y, 254, 36, 270, 44) sel[2] = (array_length(movedex)-1);
+		}
+	
+	}
+
+if menu == monmae._monster_moves_info{
+	
+	if press(ENTER){
+		if editing_move_val == -1 editing_move_val = sel[3];
+		
+		switch (sel[3]){
+			
+			case move.name:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Name";
+				break;
+				
+			case move.sprite:
+				editing_move_val = sel[3];
+				editing_move_exception = 1;
+				
+				var i = 0;
+				move_sprites = ds_list_create();
+				while sprite_exists(i){
+					var find_move = sprite_get_name(i);
+					if string_starts_with(find_move, "mov_"){
+						ds_list_add(move_sprites, find_move);
+						}
+					i++;
+					}
+				scroll = 0;
+				break;
+			
+			case move.description:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Description";
+				break;
+			
+			case move.animation:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Animation Type";
+				break;
+			
+			case move.power:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Power (Or -1)";
+				break;
+			
+			case move.healing:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Healing Power (Or -1)";
+				break;
+				
+			case move.accuracy:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Accuracy (Or -1)";
+				break;
+			
+			case move.element:
+				editing_move_val = sel[3];
+				editing_move_exception = 1;
+				instruction = "Choose an Element";
+				break;
+			
+			case move.mana:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Max Uses";
+				break;
+				
+			case move.priority:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Priority";
+				break;
+			
+			case move.chance_status: case move.chance_flinch: case move.chance_stat:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Chance";
+				break;
+			
+			case move.type: case move.flinch: case move.hi_crit: case move.protect: case move.firstturn: case move.recharge: case move.onehitko: case move.recoil:
+				if movedex[sel[2], sel[3]] == 0 movedex[sel[2], sel[3]] = 1;
+				else movedex[sel[2], sel[3]] = 0;
+				editing_move_val = -1;
+				break;
+			
+			case move.recoil_amnt:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Move Recoil % Amount";
+				break;
+			
+			default:
+				user_string = "";
+				editing_move_val = sel[3];
+				instruction = "Type Stat Change";
+			}
+		clear(ENTER);
+		}
+	if editing_move_val != -1 exit;
+	else{
+		switch (sel[3]){
+			
+			case move.power:
+				if press(RIGHT)
+				if press(LEFT) 
+				break;
+		
+			}
+		}
+	
+	if mouse_wheel_up() and sel[3] > 0 sel[3]--;
+	if mouse_wheel_down() and sel[3] < array_length(movedex[0])-1 sel[3]++;
+	
+	if press(ESCAPE) menu = monmae._monster_moves;
+	if press(DOWN) and sel[3] < array_length(movedex[0])-1 sel[3]++;
+	if press(UP) and sel[3] > 0 sel[3]--;
+	
+	if press(RIGHT){
+		
+		}
+	
+	if mouse(){
+		if point_in_rectangle(mouse_x, mouse_y, 214, 6, 223, 17){
+			sel[3] -= 10;
+			if sel[3] < 0 sel[3] = 0;
+			}
+		if point_in_rectangle(mouse_x, mouse_y, 226, 6, 235, 17){
+			sel[3] += 10;
+			if sel[3] > array_length(movedex[0])-6 sel[3] = (array_length(movedex[0])-6);
+			}
+			
+		//Check for "Top" and "Bot"
+		if point_in_rectangle(mouse_x, mouse_y, 254, 25, 270, 33) sel[3] = 0;
+		if point_in_rectangle(mouse_x, mouse_y, 254, 36, 270, 44) sel[3] = (array_length(movedex[0])-6);
+		}
+	
 	}

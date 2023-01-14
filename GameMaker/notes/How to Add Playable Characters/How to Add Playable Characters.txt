@@ -1,0 +1,4 @@
+To add a new playable character, simply add their animation to the "spr_players_index" sprite.
+After that, you can select them from the Player Visual Editor in the Visual Editor.
+
+It's as simple as that! An in-depth YouTube Tutorial for this process will be added soon^^

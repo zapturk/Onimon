@@ -146,19 +146,7 @@ for (var i = 0; i < 7; i++;){
 
 audio_stop_all();
 audio_play_sound(snd_battle, 1, 1);
-
-//Switching Mons Menu items
-sel[0] = 0;		//Menu 1 - PC X
-sel[1] = 0;		//Menu 2 - PC Y 
-sel[2] = 0;		//Menu 3 - Box Sel
-sel[3] = 0;		//Menu 4 = PC Party Menu
-sel[4] = 0;		//Menu 5 = Party/Close Sel
-
-showinfo = 0;
-float = -1;
-float_mon = -1;
-float_xpos = 0;
-float_ypos = 0;
+audio_sound_gain(snd_battle, 1, 0);
 
 /*
 During "fight", we will get the players move, and the enemies.

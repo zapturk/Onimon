@@ -4,7 +4,7 @@ if y < obj_player.y depth = obj_player.depth + 1;
 else depth = obj_player.depth - 1
 
 //Display our dialogue and lock the player in place while talking
-if press(ENTER) and pause == 0 and !instance_exists(obj_battle_transition){
+if press(ENTER)  and pause == 0 and !instance_exists(obj_battle_transition){
 	//audio_play_sound(snd_menu_blip_01, 1, 0);
 	if talking == true{
 		

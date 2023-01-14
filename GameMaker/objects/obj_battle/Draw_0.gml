@@ -194,7 +194,7 @@ if menu == battl.fight{
 		var move_num = monsters[battler, party.move1+battle_sel];
 		var mon_mana = string(GET_STAT(PLAYER, MON_MANA_01+battle_sel));
 		var move_mana = string(movedex[monsters[battler, party.move1+battle_sel], move.mana]);
-		var move_element = GET_MOVE_NAME(move_num, MOVE_ELEMENT);
+		var move_element = GET_MOVE_STRING(move_num, MOVE_ELEMENT);
 	
 		text(_xx+182, _yy,	mon_mana + "/" + move_mana);
 		text(_xx+182, _yy+11, move_element);
@@ -220,7 +220,7 @@ if menu == battl.mons{
 	//Draw Party
 	format(c_white, 1, fn_yana5x5, 0, 1);
 	for (var i = 0, ii = 0; i < 6; i++;){
-		var xx = 128-88, yy = 2;
+		var xx = x-88, yy = y - _cam_height/2 + 2;
 		
 		//Draw background box
 		var o = 0;
@@ -258,10 +258,10 @@ if menu == battl.mons{
 			text(xx+84+(o*96), yy+26 + (ii*36), name);
 			halign(0);
 			
-			text(xx+8+(o*96), yy+42 + (ii*36), "Lv" + string(level));
+			text(xx+8+(o*96), yy+44 + (ii*36), "Lv" + string(level));
 			
 			format(c_white, -1, -1, 2);
-			text(xx+78+(o*96), yy+34 + (ii*36), hp + "/" + max_hp);
+			text(xx+78+(o*96), yy+36 + (ii*36), hp + "/" + max_hp);
 			halign(0);
 			}
 		else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, EMPTY);
@@ -298,7 +298,7 @@ if menu == battl.info{
 	
 		//Draw bottom row stats
 		var _type1 = mondex[monsters[sel[1], 0], dex.element1];
-		paint(cx+170, cy+118, spr_icon_types, _type1);
+		paint(cx+170, cy+110, spr_icon_types, _type1);
 					
 		text(cx+186, cy+127, monsters[sel[1], party.exp]);
 		color();

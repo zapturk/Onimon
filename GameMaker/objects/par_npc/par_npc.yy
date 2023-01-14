@@ -6,7 +6,7 @@
     "name": "spr_npcs_keys",
     "path": "sprites/spr_npcs_keys/spr_npcs_keys.yy",
   },
-  "solid": true,
+  "solid": false,
   "visible": true,
   "managed": true,
   "spriteMaskId": null,
