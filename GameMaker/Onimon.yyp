@@ -151,6 +151,7 @@
     {"id":{"name":"sprite_stacking","path":"scripts/sprite_stacking/sprite_stacking.yy",},"order":3,},
     {"id":{"name":"spr_mouse_cursor","path":"sprites/spr_mouse_cursor/spr_mouse_cursor.yy",},"order":18,},
     {"id":{"name":"spr_editor_arrow","path":"sprites/spr_editor_arrow/spr_editor_arrow.yy",},"order":24,},
+    {"id":{"name":"rm_route01Houses","path":"rooms/rm_route01Houses/rm_route01Houses.yy",},"order":0,},
     {"id":{"name":"rm_prologue","path":"rooms/rm_prologue/rm_prologue.yy",},"order":3,},
     {"id":{"name":"dialogue_functions","path":"scripts/dialogue_functions/dialogue_functions.yy",},"order":1,},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},"order":16,},
@@ -238,6 +239,7 @@
     {"roomId":{"name":"rm_laboratory","path":"rooms/rm_laboratory/rm_laboratory.yy",},},
     {"roomId":{"name":"rm_overworld","path":"rooms/rm_overworld/rm_overworld.yy",},},
     {"roomId":{"name":"rm_primeTownHouses","path":"rooms/rm_primeTownHouses/rm_primeTownHouses.yy",},},
+    {"roomId":{"name":"rm_route01Houses","path":"rooms/rm_route01Houses/rm_route01Houses.yy",},},
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Fonts.yy","order":15,},
@@ -288,6 +290,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tilesets","folderPath":"folders/Sprites/Tilesets.yy","order":13,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"User Interface","folderPath":"folders/Sprites/User Interface.yy","order":14,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy","order":9,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Route01","folderPath":"folders/Rooms/Onimon/Route01.yy","order":2,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
