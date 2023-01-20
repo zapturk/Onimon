@@ -23,6 +23,10 @@ window/size/window_width_override=640
 window/size/window_height_override=576
 window/stretch/mode="viewport"
 
+[editor]
+
+export/convert_text_resources_to_binary=true
+
 [layer_names]
 
 2d_physics/layer_1="Player"
