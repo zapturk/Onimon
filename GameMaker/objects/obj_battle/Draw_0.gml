@@ -70,7 +70,17 @@ color(col[COL_RED, 2]);
 
 //Paint healthbar
 var _health = percentage(GET_STAT(PLAYER, MAX_HEALTH_SUM), GET_STAT(PLAYER, MON_HEALTH_CURR));
-paint_healthbar(_xx+109, _yy+64, spr_health, _health);
+var pHPFrame = 0;
+
+if(_health < .50){
+	pHPFrame = 1;
+}
+
+if(_health < .25){
+	pHPFrame = 2;	
+}
+
+paint_healthbar(_xx+109, _yy+64, spr_health, _health, pHPFrame);
 
 var _xp = percentage(GET_STAT(PLAYER, MON_EXP_MAXI), GET_STAT(PLAYER, MON_EXP_CURR));
 paint_healthbar(_xx+98, _yy+71, spr_xp, _xp);
@@ -142,7 +152,18 @@ text(_xx+3 + string_width(en_mon_name), _yy, " L" + en_mon_level);
 color(col[COL_RED, 2]);
 
 var _health = percentage(GET_STAT(ENEMY, MAX_HEALTH_SUM), GET_STAT(ENEMY, MON_HEALTH_CURR));
-paint_healthbar(_xx+21, _yy+14, spr_health, _health);
+
+var eHPFrame = 0;
+
+if(_health < .50){
+	eHPFrame = 1;
+}
+
+if(_health < .25){
+	eHPFrame = 2;	
+}
+
+paint_healthbar(_xx+21, _yy+14, spr_health, _health, eHPFrame);
 #endregion
 
 alpha(1);

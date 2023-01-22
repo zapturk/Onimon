@@ -285,7 +285,18 @@ if pause == _pause.info{
 		
 		//Draw the monsters healthbar based on it's current health
 		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), _healthbar = hp / max_hp;
-		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, 0);
+		
+		var hpFrame = 0;
+		
+		if(_healthbar < .50){
+			hpFrame = 1;
+		}
+		
+		if(_healthbar < .25){
+			hpFrame = 2;
+		}
+		
+		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, hpFrame);
 		
 		format(c_white, 1, fn_yana5x5, 2);
 		text(cx+67, cy+23, name);
