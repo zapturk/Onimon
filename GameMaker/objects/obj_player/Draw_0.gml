@@ -32,6 +32,8 @@ if pause < 2 or pause == _pause.logoff{
 		
 	draw_sprite_part(spr_players_index, 0, (action+(dir*4))*20, playable_character*22, 20, 22, x-2, y-6);
 	
+	if moving && tile_meeting(target_x, target_y, "Grass") paint(x, y, spr_grass_walk_overlay, action);
+	
 	if !(moving) && tile_meeting(x, y, "Grass") paint(x, y, spr_grass_overlay, image_index);
 	
 	

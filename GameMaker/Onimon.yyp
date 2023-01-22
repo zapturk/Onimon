@@ -156,6 +156,7 @@
     {"id":{"name":"dialogue_functions","path":"scripts/dialogue_functions/dialogue_functions.yy",},"order":1,},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},"order":16,},
     {"id":{"name":"spr_splash_2","path":"sprites/spr_splash_2/spr_splash_2.yy",},"order":3,},
+    {"id":{"name":"spr_grass_walk_overlay","path":"sprites/spr_grass_walk_overlay/spr_grass_walk_overlay.yy",},"order":7,},
     {"id":{"name":"list","path":"scripts/list/list.yy",},"order":0,},
     {"id":{"name":"spr_pc_cursor","path":"sprites/spr_pc_cursor/spr_pc_cursor.yy",},"order":8,},
     {"id":{"name":"par_interaction","path":"objects/par_interaction/par_interaction.yy",},"order":3,},
