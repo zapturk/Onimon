@@ -16,7 +16,7 @@ start_x = px;
 start_y = py;
 
 //Assign the starter monster for your player (more advanced starter selection options coming ASAP)
-ADD_A_MONSTER(m.NEKOSWORD, 5);
+ADD_A_MONSTER(m.NEKOSWORD, 100);
 
 //Want your players to start with more than one starter? Uncomment the lines below
 //ADD_A_MONSTER(m.XKOBOMA, 50);

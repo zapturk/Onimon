@@ -62,11 +62,16 @@ var mon_level = string(GET_STAT(PLAYER, MON_LEVEL));
 
 var _xx = 69 + ui_offset, _yy = 28;
 
+// Sets the text color
+color(c_black)
+
 //Paint name and level
 text(_xx+91, _yy+50, mon_name);
-color(col[COL_RED, 1]);
-text(_xx+91 + string_width(mon_name), _yy+50, " L" + mon_level);
-color(col[COL_RED, 2]);
+//color(col[COL_RED, 1]);
+
+text(_xx+91 + string_width(mon_name), _yy+50, " :L" + mon_level);
+//color(col[COL_RED, 2]);
+
 
 //Paint healthbar
 var _health = percentage(GET_STAT(PLAYER, MAX_HEALTH_SUM), GET_STAT(PLAYER, MON_HEALTH_CURR));
@@ -80,13 +85,13 @@ if(_health < .25){
 	pHPFrame = 2;	
 }
 
-paint_healthbar(_xx+109, _yy+64, spr_health, _health, pHPFrame);
+paint_healthbar(_xx+106, _yy+64, spr_health, _health, pHPFrame);
 
 var _xp = percentage(GET_STAT(PLAYER, MON_EXP_MAXI), GET_STAT(PLAYER, MON_EXP_CURR));
-paint_healthbar(_xx+98, _yy+71, spr_xp, _xp);
+paint_healthbar(_xx+106, _yy+72, spr_xp, _xp);
 
 halign(2);
-text(_xx+182, _yy+63, string(round(GET_STAT(PLAYER, MON_HEALTH_CURR))) + "/" + string(GET_STAT(PLAYER, MAX_HEALTH_SUM)));
+text(_xx+181, _yy+63, string(round(GET_STAT(PLAYER, MON_HEALTH_CURR))) + "/" + string(GET_STAT(PLAYER, MAX_HEALTH_SUM)));
 #endregion
 
 #region Draw enemy info
@@ -147,9 +152,11 @@ var en_mon_level = string(GET_STAT(ENEMY, MON_LEVEL));
 
 text(_xx+3, _yy, en_mon_name);
 
-color(col[COL_RED, 1]);
-text(_xx+3 + string_width(en_mon_name), _yy, " L" + en_mon_level);
-color(col[COL_RED, 2]);
+//color(col[COL_RED, 1]);
+color(c_black)
+text(_xx+3 + string_width(en_mon_name), _yy, " :L" + en_mon_level);
+//color(col[COL_RED, 2]);
+color(c_black)
 
 var _health = percentage(GET_STAT(ENEMY, MAX_HEALTH_SUM), GET_STAT(ENEMY, MON_HEALTH_CURR));
 
@@ -163,7 +170,7 @@ if(_health < .25){
 	eHPFrame = 2;	
 }
 
-paint_healthbar(_xx+21, _yy+14, spr_health, _health, eHPFrame);
+paint_healthbar(_xx+18, _yy+14, spr_health, _health, eHPFrame);
 #endregion
 
 alpha(1);

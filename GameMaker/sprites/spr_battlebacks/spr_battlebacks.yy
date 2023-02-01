@@ -14,6 +14,7 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"39dd31e8-fed3-4b93-9a68-edef03abbafc",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"3b7ffd56-4b48-47d5-93c9-69e2078c69c7",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"17edea11-86bb-4034-8a2f-df40b1e0e017",},
   ],
   "gridX": 0,
@@ -44,7 +45,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 3.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -56,7 +57,8 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"39dd31e8-fed3-4b93-9a68-edef03abbafc","path":"sprites/spr_battlebacks/spr_battlebacks.yy",},},},"Disabled":false,"id":"3d62c662-8382-4d46-9983-1e03ca97567a","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"17edea11-86bb-4034-8a2f-df40b1e0e017","path":"sprites/spr_battlebacks/spr_battlebacks.yy",},},},"Disabled":false,"id":"b4822912-610b-462c-a9c8-e3a4cd657f68","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"3b7ffd56-4b48-47d5-93c9-69e2078c69c7","path":"sprites/spr_battlebacks/spr_battlebacks.yy",},},},"Disabled":false,"id":"3bb9289f-67f3-41ed-a67c-d530250d5bf4","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"17edea11-86bb-4034-8a2f-df40b1e0e017","path":"sprites/spr_battlebacks/spr_battlebacks.yy",},},},"Disabled":false,"id":"b4822912-610b-462c-a9c8-e3a4cd657f68","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
