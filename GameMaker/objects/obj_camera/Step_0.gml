@@ -18,8 +18,31 @@ if instance_exists(obj_player){
 			}
 		exit;
 		}
+	var tarx_buffer = 0, tary_buffer = 0;
+	
+	//Check player distance to the left edge of the map
+	if tarx-128 < 0{
+		while tarx+tarx_buffer > 0 tarx_buffer--;
+		tarx += (128-(-tarx_buffer));
+		}
+		
+	//Check player distance to the right edge of the map
+	if tarx+128 > room_width{
+		while tarx+tarx_buffer < room_width tarx_buffer++;
+		tarx -= (128-tarx_buffer);
+		}
+	
+	//Check player distance to the top edge of the map
+	if tary-72 < 0{
+		while tary+tary_buffer > 0 tary_buffer--;
+		tary += (72-(-tary_buffer));
+		}
 
-	view_camera[0] = cam;
+	//Check player distance to the bottom edge of the map
+	if tary+72 > room_height{
+		while tary+tary_buffer < room_width tary_buffer++;
+		tary -= (72-tary_buffer);
+		}
 	
 	if (smooth_camera){
 		x += (tarx - x)/5;

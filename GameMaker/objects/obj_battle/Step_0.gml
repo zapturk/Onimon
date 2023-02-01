@@ -55,7 +55,7 @@ sel[0] = GET_VERTICAL_INPUTS_2x2(sel[0]);
 if press(ENTER){
 	switch sel[0]{
 		case 0: menu = battl.fight;	break;
-		case 1: menu = battl.mons;	break;
+		case 1: menu = battl.mons; 	break;
 		case 2: if !(trainer) menu = battl.captr;	break;
 		case 3: if !(trainer) menu = battl.flee;	break;
 		}
@@ -164,7 +164,7 @@ if menu == battl.mons{
 				break;
 			case 1:
 				menu = battl.info;
-				//sel[0] = 0;
+				sel[2] = 0;
 				exit;
 			}
 		}

@@ -63,7 +63,7 @@ new_health_prev_count[0] = 0;
 new_health_prev_count[1] = 0;
 
 //If for some reason we don't have a monster assigned, set the monster to a Level 5 Nekosword to avoid crashes
-if eparty[0, 0] == -1 ADD_ENEMY_MONSTER(m.NEKOSWORD, 5);
+if eparty[0, 0] == -1 ADD_ENEMY_MONSTER(m.MONSTER_13, 5);
 
 //Cycle through the party and set the Mana for all moves (if needed)
 
@@ -147,6 +147,26 @@ for (var i = 0; i < 7; i++;){
 audio_stop_all();
 audio_play_sound(snd_battle, 1, 1);
 audio_sound_gain(snd_battle, 1, 0);
+
+_cam_width = 256;
+_cam_height = 144;
+
+//MonDex Variables
+hobble[0] = 0;
+hobble[1] = 0;
+incr[0] = 1;
+incr[1] = 1;
+timer = 0;
+
+showinfo = 0;
+float = -1;
+float_mon = -1;
+float_xpos = 0;
+float_ypos = 0;
+
+scrolling_bg_x = 0;
+scrolling_bg_y = 0;
+
 
 /*
 During "fight", we will get the players move, and the enemies.

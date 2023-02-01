@@ -23,6 +23,12 @@ if press(ENTER)  and pause == 0 and !instance_exists(obj_battle_transition){
 			msg = 0;
 			talking = false;
 			interacting = 0;
+			
+			//Additionally, if we have a list of actions, perform them as needed based on our character value
+			if is_array(actions){
+				script_execute_ext(actions[characters[char]].scr, actions[characters[char]].args);
+				}
+			
 			}
 		}
 	else{
@@ -41,6 +47,7 @@ if press(ENTER)  and pause == 0 and !instance_exists(obj_battle_transition){
 			
 			talking = true;
 			interacting = 1;
+			scr_check_quests();
 			msgs = array_length(dialogue)-1;
 			}
 		}

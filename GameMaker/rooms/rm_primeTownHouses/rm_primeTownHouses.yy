@@ -17,7 +17,7 @@
   ],
   "isDnd": false,
   "layers": [
-    {"resourceType":"GMRInstanceLayer","resourceVersion":"1.0","name":"Hidden","depth":0,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"properties":[],"userdefinedDepth":false,"visible":true,},
+    {"resourceType":"GMRInstanceLayer","resourceVersion":"1.0","name":"Hidden","depth":0,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"properties":[],"userdefinedDepth":false,"visible":false,},
     {"resourceType":"GMRTileLayer","resourceVersion":"1.1","name":"Collision","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"properties":[],"tiles":{"SerialiseHeight":45,"SerialiseWidth":64,"TileCompressedData":[
 -3,0,-10,1,-4,0,-14,1,-4,0,-10,1,-5,0,1,-2147483648,-10,1,-3,-2147483648,-3,0,1,1,-7,0,-2,1,-4,0,1,1,-12,0,1,1,-4,0,-10,1,-5,0,1,-2147483648,-10,1,-3,-2147483648,-3,0,1,1,-7,0,-2,1,-4,0,-3,1,-6,0,-5,1,
 -4,0,1,1,-8,0,1,1,-5,0,2,-2147483648,1,-7,-2147483648,-2,1,-3,-2147483648,-3,0,1,1,-3,0,-2,1,-3,0,1,1,-4,0,1,1,-12,0,1,1,-4,0,1,1,-8,0,1,1,-5,0,3,-2147483648,1,1,-7,-2147483648,1,1,-3,-2147483648,-3,0,1,1,-8,

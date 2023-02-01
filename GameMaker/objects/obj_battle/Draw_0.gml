@@ -67,20 +67,18 @@ color(c_black)
 
 //Paint name and level
 text(_xx+91, _yy+50, mon_name);
-//color(col[COL_RED, 1]);
-
 text(_xx+91 + string_width(mon_name), _yy+50, " :L" + mon_level);
-//color(col[COL_RED, 2]);
-
 
 //Paint healthbar
 var _health = percentage(GET_STAT(PLAYER, MAX_HEALTH_SUM), GET_STAT(PLAYER, MON_HEALTH_CURR));
 var pHPFrame = 0;
 
+// sets the bar to yellow
 if(_health < .50){
 	pHPFrame = 1;
 }
 
+// set the bar to red
 if(_health < .25){
 	pHPFrame = 2;	
 }
@@ -151,23 +149,20 @@ var en_mon_name = string(GET_DEX(ENEMY, DEX_NAME));
 var en_mon_level = string(GET_STAT(ENEMY, MON_LEVEL));
 
 text(_xx+3, _yy, en_mon_name);
-
-//color(col[COL_RED, 1]);
-color(c_black)
 text(_xx+3 + string_width(en_mon_name), _yy, " :L" + en_mon_level);
-//color(col[COL_RED, 2]);
-color(c_black)
+
 
 var _health = percentage(GET_STAT(ENEMY, MAX_HEALTH_SUM), GET_STAT(ENEMY, MON_HEALTH_CURR));
+var eHPFrame  = 0;
 
-var eHPFrame = 0;
-
+// sets the bar to yellow
 if(_health < .50){
-	eHPFrame = 1;
+	eHPFrame  = 1;
 }
 
+// set the bar to red
 if(_health < .25){
-	eHPFrame = 2;	
+	eHPFrame  = 2;	
 }
 
 paint_healthbar(_xx+18, _yy+14, spr_health, _health, eHPFrame);
@@ -230,25 +225,34 @@ if menu == battl.fight{
 	}
 if menu == battl.mons{
 	
+	
+	//spr_party_monsters frame macros	
 	alpha(0.66);
 	color(c_black);
-	format(c_white, 1);
-	paint(x+128, y+72, spr_party);
-	var xx = x+32, yy = y+72;
+	format(col[COL_PURPLE, 3], 1);
+	var xx = 128-80-1, yy = 72-_cam_height/2-7;
 	
-	if sel[2] == -1 or sel[2] == 2{
-		//paint(xx, y-16+_cam_height/2, spr_controls);
-		}
+	draw_sprite_tiled(spr_purple_doublesquare, 0, xx + scrolling_bg_x, yy + scrolling_bg_y);
+	paint(128, 72, spr_party);
+	
+	if sel[2] == -1 or sel[2] == 2 text(xx-38, yy+131, "Choose a Dokimon");
 	else{
-		paint(x+128, y+72, spr_party, 1);
-		paint(x+70+(sel[2]*66), y+131, spr_cursor_w);
+		text(xx-27, yy+131, "Switch   Info");
+		paint(128-116+(sel[2]*47), 72-17+_cam_height/2, spr_cursor_w, 0, 1, 1, col[COL_PURPLE, 3]);
 		}
-	
+	color();
+
+	//Slowly scroll the looping background 
+	scrolling_bg_x += 0.15;
+	scrolling_bg_y += 0.15;
 		
 	//Draw Party
 	format(c_white, 1, fn_yana5x5, 0, 1);
 	for (var i = 0, ii = 0; i < 6; i++;){
-		var xx = x-88, yy = y - _cam_height/2 + 2;
+		var xx = 128-118, yy = 72 - _cam_height/2 - 12;
+		
+		//Elevate the monster we're hovering
+		if sel[1] == i yy -= 2;
 		
 		//Draw background box
 		var o = 0;
@@ -258,66 +262,89 @@ if menu == battl.mons{
 		if monsters[i, 0] != -1{
 			var num =  monsters[i, 0], name = mondex[monsters[i, 0], dex.name],
 			level = monsters[i, party.level], hp = string(round(monsters[i, party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, i));
-			var _healthbar = hp / max_hp;
+			var x_spacer = 120, y_spacer = 39, _healthbar = hp / max_hp, xp = string(round(monsters[i, party.exp])),
+			max_xp = string(GET_STAT(PLAYER, MAX_EXP_SUM, i));
+			var _expbar = xp / max_xp;
 			
+			alpha(0.8);
 			//Draw the monster and their name if one exists in this slot
 			if float_mon != -1{
 				if float_mon == i{
-					if press(ENTER){
-						float_xpos = o;
-						float_ypos = ii;
-						}
-					if sel[1] == i paint(xx+1+(float_xpos*96), yy+18+(float_ypos*36), spr_party_monbox, MOVIN);
-					else paint(xx+42+(o*96), yy+42+(ii*36), spr_party_monbox, MOVTO);
+					if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVIN);
+					else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVTO);
 					}
 				else{
-				if sel[1] == i paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, MOVIN);
-				else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, FILLED);
+				if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, MOVIN);
+				else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, FILLED);
 				}
 			}
 			else{
-				if sel[1] == i paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, SELCT);
-				else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, FILLED);	
+				if sel[1] == i paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, SELCT);
+				else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, FILLED);	
 				}
-			paint_from_index(xx+18+(o*96), yy+30+(ii*36)+mon_hop, spr_monsters_mini, num);
-			paint_healthbar(xx+46+(o*96), yy+42+(ii*36), spr_party_monbox_hp, _healthbar);
+			alpha();
+			paint_from_index(xx+22+(o*x_spacer), yy+30+(ii*y_spacer)+mon_hop, spr_monsters_mini, num);
 			
-			format(col[COL_RED, 3], -1, -1, 2);
-			text(xx+84+(o*96), yy+26 + (ii*36), name);
-			halign(0);
+			paint(xx+46+(o*x_spacer), yy+35+(ii*y_spacer), spr_party_monbox_hp);
+			paint_healthbar(xx+46+(o*x_spacer), yy+35+(ii*y_spacer), spr_party_monbox_hp, _healthbar, 1);
 			
-			text(xx+8+(o*96), yy+44 + (ii*36), "Lv" + string(level));
+			//paint(xx+46+(o*x_spacer), yy+40+(ii*y_spacer), spr_party_monbox_xp);
+			paint_healthbar(xx+46+(o*x_spacer), yy+40+(ii*y_spacer), spr_party_monbox_xp, _expbar, 1);
 			
 			format(c_white, -1, -1, 2);
-			text(xx+78+(o*96), yy+36 + (ii*36), hp + "/" + max_hp);
+			text(xx+86+(o*x_spacer), yy+30 + (ii*y_spacer), name);
+			halign(0);
+			
+			text(xx+8+(o*x_spacer), yy+44 + (ii*y_spacer), "Lv" + string(level));
+			
+			format(c_white, -1, -1, 2);
+			text(xx+103+(o*x_spacer), yy+6+y_spacer + (ii*y_spacer), hp + "/" + max_hp);
 			halign(0);
 			}
-		else paint(xx+1+(o*96), yy+18+(ii*36), spr_party_monbox, EMPTY);
+		else paint(xx+1+(o*x_spacer), yy+18+(ii*y_spacer), spr_party_monbox, EMPTY);
 		if divisible_by(i+1, 2) ii++;
 		}
 	}
 
 if menu == battl.info{
 	var num =  monsters[sel[1], 0], name = mondex[monsters[sel[1], 0], dex.name], level = string(monsters[sel[1], party.level]);
-	var cx = x, cy = y-8, mon_offset = 56/2;
+	var cx = 128 - _cam_width/2, cy = 72 - _cam_height/2, mon_offset = 56/2;
 	
+	var xx = 128-80, yy = 72-_cam_height/2;
+	draw_sprite_tiled(spr_purple_doublesquare, 0, xx + scrolling_bg_x, yy + scrolling_bg_y);
+	
+	//Slowly scroll the looping background 
+	scrolling_bg_x += 0.15;
+	scrolling_bg_y += 0.15;
+	
+	cy+=2;
 	if sel[4] == 0{
-		if sel[3] == 0 paint(x+128, y+72, spr_monster_info, sel[2]);
-		else paint(x+128, y+72, spr_monster_info, 2);
+		if sel[3] == 0 paint(128, 72, spr_monster_info, sel[2]);
+		else paint(128, 72, spr_monster_info, 2);
 		
-		paint_from_index(cx+mon_offset+12, cy+mon_offset+50, spr_monsters_battle, monsters[sel[1], 0]);
+		paint_from_index(cx+mon_offset+12, cy+mon_offset+42+hobble[0], spr_monsters_battle, monsters[sel[1], 0]);
+		timer++;
+		if timer >= 10{
+			hobble[0] += incr[0];
+			if abs(hobble[0]) == 2 incr[0] = -incr[0];
+			timer = 0;
+			}
+		
+		//Draw the monsters healthbar based on it's current health
+		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), _healthbar = hp / max_hp;
+		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, 0);
 		
 		format(c_white, 1, fn_yana5x5, 2);
 		text(cx+67, cy+23, name);
-		color(col[COL_RED, 3]);
 	
 		halign(0);
-		text(cx+26, cy+33, "level: " + level);
+		text(cx+26, cy+34, "level: " + level);
 		}
-	else paint(x+128, y+72, spr_monster_info, 3);
+	else paint(128, 72, spr_monster_info, 3);
 		
 	
 	halign(2);
+	//If we're moving a monsters starts
 	if sel[2] == 0{
 		//Define local variables for the information we'll be drawing to the screen
 		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), atk = string(GET_STAT(PLAYER, ATTACK_SUM, sel[1])),
@@ -326,14 +353,17 @@ if menu == battl.info{
 	
 		//Draw bottom row stats
 		var _type1 = mondex[monsters[sel[1], 0], dex.element1];
-		paint(cx+170, cy+110, spr_icon_types, _type1);
+		paint(cx+170, cy+104	, spr_icon_types, _type1);
 					
-		text(cx+186, cy+127, monsters[sel[1], party.exp]);
+		color(col[COL_PURPLE, 2]);
+		text(cx+186, cy+121, monsters[sel[1], party.exp]);
+		
 		color();
-		text(cx+192, cy+137, monsters[sel[1], party.trainer]);
+		text(cx+194, cy+131, monsters[sel[1], party.trainer]);
 	
 		cx+=235;
 		cy+=23;
+		#region Draw Stats
 		//Draw health / max health (and other stats)
 		color(col[COL_RED, 0]);
 		text(cx+1, cy, hp + "/" + max_hp);
@@ -369,14 +399,18 @@ if menu == battl.info{
 		text(cx+1, cy, spd);
 		color(col[COL_RED, 3]);
 		text(cx, cy, spd);
+		#endregion
+		
 		}
+	
+	//If we're viewing a monsters moves
 	if sel[2] == 1{
 		
 		cx+=100;
 		cy+=24;
 		
 		if sel[3] != 0{
-			paint(cx-12, cy+8 + ((sel[3]-1) * 13), spr_cursor_b);
+			paint(cx-12, cy + ((sel[3]-1) * 13), spr_cursor_b);
 			
 			color();
 			halign(0);
@@ -426,27 +460,30 @@ if menu == battl.info{
 			else{
 				if monsters[sel[1], (party.move1 + i)] != -1{
 					var move_type = movedex[monsters[sel[1], (party.move1 + i)], move.element];
-					paint(cx+108, cy+4, spr_icon_types, move_type);
+					paint(cx+108, cy-4, spr_icon_types, move_type);
 					}
 				}
 			
 			cy+=13;
 			}
-		cx = x+128;
-		cy+=43;
+		cx = 128;
+		cy+=35;
 		halign(1);
 		valign(0);
-		var move_desc = movedex[monsters[sel[1], (party.move1+(sel[3]-1))], move.description];
+		if sel[3] == 0 var move_desc = movedex[monsters[sel[1], party.move1], move.description];
+		else var move_desc = movedex[monsters[sel[1], party.move1+sel[3]-1], move.description];
 		text(cx, cy, move_desc, 230);
 		valign(1);
 		}
+	
+	//If we're viewing a monsters movepools (assigning new moves)
 	if sel[2] == 2{
 	
 		//Reposition
-		cx = x+34;
+		cx = 128 - 94;
 		cy += 24;
 		
-		paint(cx-10, cy+22, spr_cursor_b);
+		paint(cx-10, cy+14, spr_cursor_b);
 		
 		#region Obtain data for the move we're changing and draw it
 		var move_name = string(movedex[monsters[sel[1], (party.move1 + (sel[3]-1))], move.name]);
@@ -464,7 +501,7 @@ if menu == battl.info{
 		color(col[COL_RED, 3]);
 		text(cx+2, cy, move_name);
 		
-		paint(cx+80, cy+3, spr_icon_types, move_type);
+		paint(cx+80, cy-5, spr_icon_types, move_type);
 		
 		halign(2);
 		//Draw move mana's
@@ -498,7 +535,7 @@ if menu == battl.info{
 			color(col[COL_RED, 3]);
 			text(cx+2, cy, move_name);
 			
-			paint(cx+80, cy+3, spr_icon_types, move_type);
+			paint(cx+80, cy-4, spr_icon_types, move_type);
 			
 			halign(1);
 			//Draw move mana's
@@ -525,23 +562,23 @@ if menu == battl.info{
 		text(cx+169, cy+2, _power);
 		text(cx+169, cy+14, _accuracy);
 	
-		cx = x+128;
+		cx = 128;
 		cy+=32;
 		halign(1);
 		valign(0);
 		font(fn_yana);
 		var move_desc = movedex[movepool[monsters[sel[1], 0], sel[4]-1], move.description];
-		text(cx, cy+8, move_desc, 224);
+		text(cx, cy, move_desc, 224);
 		valign(1);
 		}
-
+	
 	}
 
 if alph > 0{
 	alph -= 0.05;
 	alpha(alph);
 	color(c_black);
-	draw_rectangle(x-500, y-500, x+500, y+500, 0);
+	draw_rectangle(128-500, 72-500, 128+500, 72+500, 0);
 	alpha();
 	}
 

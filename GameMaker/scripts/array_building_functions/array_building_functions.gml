@@ -54,6 +54,19 @@ else{
 	}
 }
 
+function EDIT_MONDEX_ARRAY(){
+
+///@arg monster_index
+///@arg editing
+///@arg value
+
+//How to use:
+//EDIT_MONDEX_ARRAY(0, dex.name, "New Name");
+
+mondex[argument[0], argument[1]] = argument[2];
+
+}
+
 function SET_MOVES(){
 ///@desc Set the moves and levels at which a monster learns them
 ///@arg monster_name

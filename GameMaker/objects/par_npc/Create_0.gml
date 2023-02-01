@@ -3,6 +3,7 @@
 image_speed = 0;
 talking = false;
 dialogue = -1;
+actions = -1;
 msgs = 1;
 msg = 0;
 

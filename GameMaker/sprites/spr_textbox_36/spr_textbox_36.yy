@@ -15,12 +15,13 @@
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"88c9e3b8-bcef-4a29-96bd-0d0afeb9ce80",},
   ],
-  "gridX": 0,
-  "gridY": 0,
+  "gridX": 128,
+  "gridY": 18,
   "height": 36,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"88c1e54d-bcd9-42b8-a9e2-049a35b74a0d","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"ce3886a9-4dce-4a74-9f66-6acb1d03d1e5","blendMode":0,"displayName":"Layer 1","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"88c1e54d-bcd9-42b8-a9e2-049a35b74a0d","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":false,},
   ],
   "nineSlice": null,
   "origin": 1,

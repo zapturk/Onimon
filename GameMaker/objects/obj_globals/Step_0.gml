@@ -38,7 +38,7 @@ if press(ord("R")) game_restart();
 if press(ord("B")){
 
 	RESET_ENEMY();
-	ADD_ENEMY_MONSTER(m.NEKOSWORD, 1);
+	ADD_ENEMY_MONSTER(m.MONSTER_13, 1);
 	
 	interacting = 1;
 
@@ -52,7 +52,7 @@ if press(ord("B")){
 if press(ord("V")){
 
 	RESET_ENEMY();
-	ADD_ENEMY_MONSTER(m.NEKOSWORD, 1);
+	ADD_ENEMY_MONSTER(m.MONSTER_13, 1);
 	
 	trainer = 1;
 	interacting = 1;

@@ -271,6 +271,14 @@ if pause == _pause.info{
 	var num =  monsters[sel[1], 0], name = mondex[monsters[sel[1], 0], dex.name], level = string(monsters[sel[1], party.level]);
 	var cx = x - _cam_width/2, cy = y - _cam_height/2, mon_offset = 56/2;
 	
+	var xx = x-80, yy = y-_cam_height/2;
+	draw_sprite_tiled(spr_purple_doublesquare, 0, xx + scrolling_bg_x, yy + scrolling_bg_y);
+	
+	//Slowly scroll the looping background 
+	scrolling_bg_x += 0.15;
+	scrolling_bg_y += 0.15;
+	
+	cy+=2;
 	if sel[4] == 0{
 		if sel[3] == 0 paint(x, y, spr_monster_info, sel[2]);
 		else paint(x, y, spr_monster_info, 2);
@@ -285,25 +293,13 @@ if pause == _pause.info{
 		
 		//Draw the monsters healthbar based on it's current health
 		var hp = string(round(monsters[sel[1], party.health])), max_hp = string(GET_STAT(PLAYER, MAX_HEALTH_SUM, sel[1])), _healthbar = hp / max_hp;
-		
-		var hpFrame = 0;
-		
-		if(_healthbar < .50){
-			hpFrame = 1;
-		}
-		
-		if(_healthbar < .25){
-			hpFrame = 2;
-		}
-		
-		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, hpFrame);
+		if sel[2] == 0 paint_healthbar(cx+204, cy+30, spr_monster_info_hp, _healthbar, 0);
 		
 		format(c_white, 1, fn_yana5x5, 2);
 		text(cx+67, cy+23, name);
-		color(col[COL_RED, 3]);
 	
 		halign(0);
-		text(cx+26, cy+33, "level: " + level);
+		text(cx+26, cy+34, "level: " + level);
 		}
 	else paint(x, y, spr_monster_info, 3);
 		
@@ -318,11 +314,13 @@ if pause == _pause.info{
 	
 		//Draw bottom row stats
 		var _type1 = mondex[monsters[sel[1], 0], dex.element1];
-		paint(cx+170, cy+110, spr_icon_types, _type1);
+		paint(cx+170, cy+104	, spr_icon_types, _type1);
 					
-		text(cx+186, cy+127, monsters[sel[1], party.exp]);
+		color(col[COL_PURPLE, 2]);
+		text(cx+186, cy+121, monsters[sel[1], party.exp]);
+		
 		color();
-		text(cx+192, cy+137, monsters[sel[1], party.trainer]);
+		text(cx+194, cy+131, monsters[sel[1], party.trainer]);
 	
 		cx+=235;
 		cy+=23;

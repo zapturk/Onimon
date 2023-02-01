@@ -159,7 +159,7 @@ if menu == monmae._monster_info{
 
 	//Paint background
 	var cx = 0, cy = 0;
-	paint(cx, cy, spr_monmae, 2);
+	paint(cx, cy, spr_monmae_purple, 2);
 	format(c_white, 1, fn_yana5x5, 1, 1);
 	text(280, 8, string(sel[1]+1));
 	
@@ -232,6 +232,7 @@ if menu == monmae._monster_info{
 		if type2 != -1 paint(cx+139, cy+45, spr_icon_types, type2);
 		else paint(cx+139, cy+45, spr_icon_types, 13);
 		paint(cx+202, cy+45, spr_visual_editor_buttons, 3);
+		paint(cx+205, cy+58, spr_visual_editor_buttons, 4);
 	
 		//Check for player mouse input for editing a monsters element
 		if point_in_rectangle(mouse_x, mouse_y, 119, 44, 152, 56){
@@ -296,6 +297,74 @@ if menu == monmae._monster_info{
 	
 	halign(1);
 	text(cx+128, cy+88, string(descr), 212);
+	
+	}
+
+if menu == monmae._monsters_stats{
+
+	//Paint background
+	var cx = 0, cy = 0;
+	paint(cx, cy, spr_monmae, 4);
+	format(c_white, 1, fn_yana5x5, 1, 1);
+	text(280, 8, string(sel[1]+1));
+	
+	cx+=16;
+	format(c_white, 1, fn_yana5x5, 1, 0);
+	paint_from_index(cx + 50, cy+40 + hobble[0], spr_monsters_battle, sel[1]);
+	
+	timer++;
+	if timer >= 10{
+		hobble[0] += incr[0];
+		if abs(hobble[0]) == 2 incr[0] = -incr[0];
+		timer = 0;
+		}
+	
+	color();
+	halign(0);
+	font(fn_yana);
+	text(cx+110, cy+3, "Base Stats");
+	
+	for (var i = 0; i < 5; i++;){
+		halign(0);
+		var ii = i + sel[3];
+		
+		if ii < 7{
+			color(col[COL_RED, 3]);
+			//Tell us what part of the move we are editing
+			text(cx+112, cy+18 + (i*10), string(stat_arg_string[ii]));
+		
+			stat_value_string = mondex[sel[2], ii+1];
+			
+			halign(2);
+			color(col[COL_RED, 3]);
+			//Tell us what the current value of what we are editing is
+			text(cx+228, cy+18 + (i*10), stat_value_string);
+			}
+		}
+	halign(1);
+	var total_stats = 0;
+	color(col[COL_RED, 3]);
+	for (var i = 0, o = 0; i < 6; i++;){
+		if i == 3 o++;
+		var ii = i - (o*3);
+		var _txt = stat_arg_string[i] + " " + string(mondex[sel[2], i+1]);
+		text(cx+52 + (ii*72), cy+88 + (o*16), string(_txt), 212);
+		total_stats += mondex[sel[2], i+1];
+		}
+	color(col[COL_RED, 1]);
+	text(cx+128, cy+118, "Stats Total Sum: " + string(total_stats), 212);
+	
+	//Run similar code to the for loop but with edited values to only display once, and for our selected move
+	stat_value_string = mondex[sel[2], sel[3]+1];
+			
+	halign(0);
+	color(col[COL_RED, 1]);
+	//Draw over this in red if this is what's selected
+	text(cx+112, cy+18, string(stat_arg_string[sel[3]]));
+		
+	halign(2);
+	//Draw over this in red if this is what's selected
+	text(cx+228, cy+18, stat_value_string);
 	
 	}
 
@@ -409,6 +478,105 @@ if menu == monmae._monster_moves_info{
 	if editing_move_exception != 0{
 		
 		}
+	}
+
+if menu == monmae._monsters_movepools{
+	
+	//If we're currently choosing a move
+	if editing_pool_val != -1{
+	
+		//Paint background
+		var cx = 0, cy = 0;
+		paint(cx, cy, spr_monmae, 6);
+		format(c_white, 1, fn_yana5x5, 1, 1);
+		text(280, 8, string(sel[1]+1));
+		
+		format(c_white, 0.5);
+		for (var o = 0; o < 7; o++;){
+			for (var i = 0; i < 2; i++;){
+				if point_in_rectangle(mouse_x, mouse_y, 191 + (i*34), 22 + (o*12), 222 + (i*34), 32 + (o*12)){
+						draw_rectangle(191 + (i*34), 22 + (o*12), 222 + (i*34), 32 + (o*12), 0);
+						}
+					}
+				}
+
+		format(col[COL_RED, 2], 1, fn_yana, 0);
+		for (var i = 0; i < 11; i++){
+			halign(0);
+			var ii = i + sel[4];
+			if ii > array_length(movedex)-1 break;
+			
+			text(35, 26 + (i*10), movedex[ii, move.name]);
+			
+			halign(2);
+			var element_string = GET_MOVE_STRING(ii, MOVE_ELEMENT);
+			text(158, 26 + (i*10), element_string);
+			}
+		color(col[COL_RED, 1]);
+		halign(0);
+		text(35, 26, movedex[sel[4], move.name]);
+			
+		halign(2);
+		var element_string = GET_MOVE_STRING(sel[4], MOVE_ELEMENT);
+		text(158, 26, element_string);
+		
+		
+		format(c_white, 1, fn_yana5x5, 0, 0);
+		text(2, 142, round(mouse_x));
+		text(2, 148, round(mouse_y));
+		exit;
+		}
+	
+	//Paint background
+	var cx = 0, cy = 0;
+	paint(cx, cy, spr_monmae, 5);
+	format(c_white, 1, fn_yana5x5, 1, 1);
+	text(280, 8, string(sel[1]+1));
+	
+	cx+=16;
+	format(c_white, 1, fn_yana5x5, 1, 0);
+	paint_from_index(cx + 50, cy+40 + hobble[0], spr_monsters_battle, sel[1]);
+	
+	timer++;
+	if timer >= 10{
+		hobble[0] += incr[0];
+		if abs(hobble[0]) == 2 incr[0] = -incr[0];
+		timer = 0;
+		}
+	
+	color();
+	halign(0);
+	font(fn_yana);
+	text(cx+110, cy+3, "Movepool");
+	
+	for (var i = 0, ii = 0; i < 5; i++;){
+		var move_name = ii + sel[3]*2, level_learned = ii+1 + sel[3]*2;
+		
+		if level_learned < array_length(movepool[sel[1]]){
+			format(col[COL_RED, 3], 1, fn_yana, 0);
+			//Tell us the name of the move in this slot
+			text(cx+112, cy+18 + (i*10), string(movedex[movepool[sel[1], move_name], move.name]));
+			
+			halign(2);
+			text(cx+228, cy+18 + (i*10), string(movepool[sel[1], level_learned]));
+			}
+		ii += 2;
+		}
+	ii = 0;
+	
+	//Draw over this in red if this is what's selected
+	format(col[COL_RED, 1], 1, fn_yana, 0);
+	var move_name = ii + sel[3]*2, level_learned = ii+1 + sel[3]*2;
+	//Tell us the name of the move in this slot
+	text(cx+112, cy+18, string(movedex[movepool[sel[1], move_name], move.name]));
+	
+	halign(2);
+	text(cx+228, cy+18, string(movepool[sel[1], level_learned]));
+	
+	halign(1);
+	color(col[COL_RED, 3]);
+	var descr = movedex[movepool[sel[1], sel[3]*2], move.description];
+	text(cx+128, cy+88, string(descr), 212);
 	}
 
 format(c_white, 1, fn_yana5x5, 0, 0);

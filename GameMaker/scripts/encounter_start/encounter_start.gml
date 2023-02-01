@@ -34,8 +34,8 @@ var _m = -1;
 //FURREAL on the otherhand has gone into the list 5 times, so you have a 5/16 chance to find him, and so on.
 
 switch area{
-	case "Twindle Forest":	_m = pick(m.FURREAL, 5, m.CASPER, 4, m.CARROTTI, 4, m.QUACKFIL, 3, m.NEKOSWORD, 1);		break;
-	case "Route 01":		_m = pick(m.FURREAL, 5, m.CASPER, 4, m.CARROTTI, 4, m.QUACKFIL, 3, m.NEKOSWORD, 1);		break;
+	case "Twindle Forest":	_m = pick(m.MONSTER_10, 5, m.MONSTER_19, 4, m.MONSTER_15, 4, m.MONSTER_17, 3, m.MONSTER_13, 1);		break;
+	case "Route 01":		_m = pick(m.MONSTER_10, 5, m.MONSTER_19, 4, m.MONSTER_15, 4, m.MONSTER_17, 3, m.MONSTER_13, 1);		break;
 	
 	//Add new areas here, can copy and paste the line below and use it as a template
 	//case _area.area:				 _m = pick();		break;

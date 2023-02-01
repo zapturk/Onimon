@@ -1,7 +1,8 @@
 RELOAD
 
-draw_message = "";
 
+
+//If we have an editing window open over the main screen
 if typing != -1{
 	if press(ESCAPE){
 	
@@ -44,7 +45,82 @@ if editing_move_val != -1{
 				}
 			}
 		}
+	exit;
+	}
+if editing_stat_val != -1{
+	if press(ESCAPE){
+		
+		//If we press escape, just leave the data unchanged and reset the editing values
+		instruction = -1;
+		user_string = -1;
+		editing_stat_val = -1
+
+		}
+	exit;
+	}
+if editing_pool_val != -1{
 	
+	if instruction != -1 exit;
+	
+	if press(UP)sel[4]--;
+	if press(DOWN) sel[4]++;
+	if press(RIGHT) sel[4] += 10;
+	if press(LEFT) sel[4] -= 10;
+	if sel[4] < 0 sel[4] = 0;
+	
+	var _max = array_length(movepool)-1
+	if sel[4] > _max sel[4] = _max;
+	
+	//If we click on an element, figure out which one, and jump to moves that have this element
+	if mouse(){
+		
+		//Populate a temporary array based on the order of elements in the spr_monmae sprite
+		var i = 0;
+		_element_array[i] = element.light;		i++;
+		_element_array[i] = element.grass;		i++;
+		_element_array[i] = element.water;		i++;
+		_element_array[i] = element.fire;		i++;
+		_element_array[i] = element.electric;	i++;
+		_element_array[i] = element.flying;		i++;
+		_element_array[i] = element.fight;		i++;
+		_element_array[i] = element.dark;		i++;
+		_element_array[i] = element.poison;		i++;
+		_element_array[i] = element.dragon;		i++;
+		_element_array[i] = element.fairy;		i++;
+		_element_array[i] = element.ice;		i++;
+		_element_array[i] = element.ghost;		i++;
+		
+		for (var o = 0; o < 6; o++;){
+			for (var i = 0; i < 2; i++;){
+				if point_in_rectangle(mouse_x, mouse_y, 191 + (i*34), 22 + (o*12), 222 + (i*34), 32 + (o*12)){
+					var ii = (o*2 + (i*1));
+					
+					for (var m = 0; m < array_length(movedex)-1; m++;){
+						if movedex[m, move.element] == _element_array[ii]{
+							sel[4] = m;
+							break;
+							}
+						}
+					}
+				}
+			}
+		}
+	
+	if press(ENTER){
+		movepool[sel[1], sel[3]*2] = sel[4];
+		instruction = "What level should we learn this move?";
+		user_string = "";
+		exit;
+		}
+	
+	if press(ESCAPE){
+		
+		//If we press escape, just leave the data unchanged and reset the editing values
+		instruction = -1;
+		user_string = -1;
+		editing_pool_val = -1
+
+		}
 	exit;
 	}
 
@@ -165,14 +241,14 @@ if mouse() and mouse_y >= 144{
 	
 	switch (i){
 		case 0:
-			menu = 0;
+			menu = monmae._player;
 			image_speed = 0.075;
 			break;
 		case 1:
-			menu = 1;
+			menu = monmae._monsters;
 			break;
 		case 2:
-			menu = 3;
+			menu = monmae._monster_moves;
 			image_speed = 0.2;
 		}	
 	
@@ -213,7 +289,22 @@ if mouse() and mouse_x >= 256+16{
 					}
 				ini_write_string("Move_" + string(o), "Val" + string(0), movedex[o, 0]);
 				ini_write_string("Move_" + string(o), "Val" + string(1), movedex[o, 1]);
-				ini_write_string("Move_" + string(o), "Val" + string(2), sprite_get_name(movedex[o, 2]));
+				
+				var sprite_string = sprite_get_name(movedex[o, 2]);
+				ini_write_string("Move_" + string(o), "Val" + string(2), sprite_string);
+				}
+			ini_close();
+			
+			//Loop through the current movepools values and save them to a new ini file
+			ini_open("movepools.ini");
+			for (var o = 0; o < array_length(movepool); o++;){
+				for (var i = 0, ii = 0; i < ((array_length(movepool[o])/2)); i++;){
+					
+					ini_write_real("Monster_" + string(o), "Move" + string(i), movepool[o, ii]);
+					ini_write_real("Monster_" + string(o), "Level" + string(i), movepool[o, ii+1]);
+					ii+=2;
+					}
+				ini_write_real("Monster_" + string(o), "Movepool_Length", ((array_length(movepool[o])/2)));
 				}
 			ini_close();
 			
@@ -253,6 +344,10 @@ if menu == monmae._monsters{
 		menu = monmae._monster_info;
 		}
 	
+	if mouse(){
+		if point_in_rectangle(mouse_x, mouse_y, 20, 8, 128, 116) menu = monmae._monster_info;
+		}
+	
 	//Get mouse controls for on screen buttons
 	if mouse_x >= 256+16{
 		//Check for player mouse input on right arrows for incrementing monster num
@@ -281,7 +376,7 @@ if menu == monmae._monsters{
 		//Check for player mouse input on erase button
 		if point_in_rectangle(mouse_x, mouse_y, 256+16, 80, 256+32, 96){
 			if mouse(){
-				for (var o = 0; o < 356; o++;){
+				for (var o = 0; o < 366; o++;){
 					for (var i = 0; i < 12; i++;){
 						mondex[o, i] = 0;
 						}
@@ -338,15 +433,25 @@ if menu == monmae._monster_info{
 	else draw_message = "mon will evolve at " + string(mondex[sel[1], dex.evolve]);
 
 	//Get mouse controls for on screen buttons
-	if mouse() and mouse_x >= 256+16{
+	if mouse(){
 	
 		if sel[1] > 0{
 			//Check for player mouse input on right arrows for incrementing monster num
 			if point_in_rectangle(mouse_x, mouse_y, 256+16, 16, 256+32, 32){
 				sel[1]--;
 				}
-			
 			}
+			
+		//Check for player mouse input on MOVEPOOLS button
+		if point_in_rectangle(mouse_x, mouse_y, 191, 46, 244, 55){
+			menu = monmae._monsters_movepools
+			}
+		
+		//Check for player mouse input on BASE STATS button
+		if point_in_rectangle(mouse_x, mouse_y, 192, 58, 250, 68){
+			menu = monmae._monsters_stats
+			}
+		
 		//Check for player mouse input on right arrows for incrementing monster num
 		if point_in_rectangle(mouse_x, mouse_y, 256+16, 48, 256+32, 64){
 			sel[1]++;
@@ -386,6 +491,54 @@ if menu == monmae._monster_info{
 			ini_close();
 			}
 		}
+	}
+
+if menu == monmae._monsters_stats{
+	
+	if press(DOWN) and (sel[3] < 6) sel[3]++;
+	if sel[3] > 0{
+		if press(UP) sel[3]--;
+		}
+	
+	if press(ESCAPE) menu = monmae._monster_info;
+	
+	if press(ENTER){
+		if editing_stat_val == -1 editing_stat_val = sel[3];
+		
+		//Set up editing window data
+		user_string = "";
+		editing_stat_val = sel[3];
+		instruction = "Type Stat Value";
+		clear(ENTER);
+		}
+	
+	//If we click the random button, randomize our stats based on our current total stats sum
+	if mouse(){
+		if point_in_rectangle(mouse_x, mouse_y, 207, 7, 245, 15){
+			var i = 0, total_stats = 0;
+			repeat(6){
+				total_stats += mondex[sel[2], i+1];
+				i++;
+				}
+			i = 0;
+			randomize();
+	
+			//Reset Stats Array
+			repeat(6){
+				mondex[sel[2], i+1] = 0;
+				i++;
+				}
+		
+			//Randomly tally up stats
+			for (var i = 0, o = 0; i < total_stats; i++;){
+				var stat_increase = irandom_range(1, 3);
+				mondex[sel[2], o+1] += stat_increase;
+				i += stat_increase-1;
+				o++;
+				if o >= 6 o = 0;
+				}
+			}
+		}	
 	}
 
 if menu == monmae._monster_moves{
@@ -432,7 +585,11 @@ if menu == monmae._monster_moves{
 if menu == monmae._monster_moves_info{
 	
 	if press(ENTER){
-		if editing_move_val == -1 editing_move_val = sel[3];
+		if editing_move_val == -1 editing_move_val = sel[3]+1;	//+1 to Skip Name and start from Health
+		
+		//enum dex{
+		//	name, health, atk, def, mgk_atk, mgk_def, spd, element1, element2, ability, cap_rate, sub_descrip, descrip, evolve
+		//	}
 		
 		switch (sel[3]){
 			
@@ -570,3 +727,28 @@ if menu == monmae._monster_moves_info{
 		}
 	
 	}
+
+if menu == monmae._monsters_movepools{
+	
+	if press(DOWN) and sel[3] < (array_length(movepool[sel[1]])/2)-1 sel[3]++;
+	if sel[3] > 0{
+		if press(UP) sel[3]--;
+		}
+	
+	if press(ENTER) editing_pool_val = sel[3];
+	
+	if press(ESCAPE){
+		menu = monmae._monster_info;
+		sel[3] = 0;
+		}
+		
+	if mouse(){
+		if point_in_rectangle(mouse_x, mouse_y, 253, 10, 269, 18){
+			var l = array_length(movepool[sel[1]]);
+			movepool[sel[1], l] = movepool[sel[1], 0];
+			movepool[sel[1], l+1] = (movepool[sel[1], l-1]+1);
+		}
+		
+	}
+	
+}

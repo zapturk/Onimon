@@ -69,7 +69,10 @@ if instruction != -1{
 	text(xx - (66*sc), yy - (20*sc), instruction, tsc+1);
 	
 	var default_message = "";
+	
+	//Set the default message based on what we're editing if we haven't typed anything yet 
 	if user_string == ""{
+	
 		switch (typing){
 			case -1: break;
 			case dex.evolve:
@@ -78,11 +81,20 @@ if instruction != -1{
 			default:
 				default_message = "Start Typing..";
 			}
+			
 		switch (editing_move_val){
+				case -1: break;	//Do nothing if we're not editing a move 
 				
 				case move.animation:
 					default_message = "Start Typing..\n- 0: Animate over Enemy    1: Animation Over Self\n"
 					+ "- 2: Projectile              3: Whole Room";
+					break;
+				
+				case move.status:
+					default_message = "Start Typing..\n0, None. 1, Burn. 2, Poison.\n3, Sleep. 4, Paralyze.";
+					//enum status{
+					//	none, burn, poison, sleep, paralyze, confused
+					//	}
 					break;
 				
 				case move.priority:
@@ -104,6 +116,10 @@ if instruction != -1{
 				default:
 					default_message = "Start Typing..";
 				}
+		
+		if editing_stat_val != -1 default_message = "Start Typing..";
+		if editing_pool_val != -1 default_message = "Start Typing..";
+		
 		text(xx - (64*sc), yy - (8*sc), default_message	, tsc);
 		}
 	else text(xx - (64*sc), yy - (8*sc), user_string, tsc, 130*2);
@@ -125,8 +141,10 @@ if instruction != -1{
 		default:
 			//Do nothing;
 			}
-		
+	
+	//Set the string maximum based on what we're editing
 	switch (editing_move_val){
+		case -1: break;	//If our editing move value is -1, skip this switch statement check
 		
 		case move.name:
 			user_string = get_name(user_string, 16);
@@ -148,14 +166,20 @@ if instruction != -1{
 		default:
 			user_string = get_number(user_string, 2);
 			break;
-		
 		}
+	
+	//Set the editing restraints to 3 numbers if we're editing a monsters base stats 
+	if (editing_stat_val) != -1 user_string = get_number(user_string, 4);
+	if (editing_pool_val) != -1 user_string = get_number(user_string, 3);
+
 		
 	//Apply user string to the monsters DEX data upon pressing enter 
 	if press(vk_enter){
+		
+		if user_string == "" exit;
+		
 		switch(typing){
-			
-			case -1: break;
+			case -1: break;	//Do nothing
 				
 			case dex.name: case dex.sub_descrip: case dex.descrip:
 				mondex[sel[1], typing] = user_string;
@@ -164,10 +188,10 @@ if instruction != -1{
 			case dex.evolve:
 				mondex[sel[1], dex.evolve] = real(user_string);
 				break;
-			
 			}
+			
+		//If typing was -1, we're likely editing a move, so apply new settings to the move data instead
 		switch(editing_move_val){
-		
 			case -1: case move.sprite: case move.element: case move.status: break;
 		
 			case move.name: case move.description:
@@ -177,7 +201,27 @@ if instruction != -1{
 			default: movedex[sel[2], sel[3]] = real(user_string);
 			}
 		
+		//otherwise, we're editing a monsters base stats, so apply those settings here
+		switch(editing_stat_val){
+			case -1: break;	//Do nothing
+			
+			case 6: mondex[sel[2], dex.cap_rate] = real(user_string);
+			
+			default:			
+				mondex[sel[2], (sel[3]+1)] = real(user_string);
+			}					//+1 to Skip "Name" and start from Health base stat value
+		
+		//otherwise, we're editing a monsters base stats, so apply those settings here
+		switch(editing_pool_val){
+			case -1: break;	//Do nothing
+			
+			default:			
+				movepool[sel[1], (sel[3]*2)+1] = real(user_string);
+			}		
+		
 		editing_move_val = -1;
+		editing_stat_val = -1;
+		editing_pool_val = -1;
 		instruction = -1;
 		user_string = -1;
 		del_tmr = 30;

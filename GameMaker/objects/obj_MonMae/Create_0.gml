@@ -6,7 +6,7 @@ cursor_sprite = spr_mouse_cursor;
 image_speed = 0.1;
 
 enum monmae{
-	_player, _monsters, _monster_info, _monster_moves, _monster_moves_info
+	_player, _monsters, _monster_info, _monsters_stats, _monster_moves, _monster_moves_info, _monsters_movepools
 	}
 
 //Player Menu Vars
@@ -42,7 +42,21 @@ sel[0] = 0;		//Main menu
 sel[1] = 0;		//Monster
 sel[2] = 0;		//Menu 3
 sel[3] = 0;		//Menu 4
-sel[4] = 1;		//Menu 5
+sel[4] = 0;		//Menu 5
+
+draw_message = "";
+editing_pool_val = -1;
+
+//Stats Editing Strings Array
+var i = 0;
+stat_arg_string[i] = "Health:";				i++;
+stat_arg_string[i] = "Attack:";				i++;
+stat_arg_string[i] = "Defense:";			i++;
+stat_arg_string[i] = "Sp. Atk:";			i++;
+stat_arg_string[i] = "Sp. Def:";			i++;
+stat_arg_string[i] = "Speed:";				i++;
+stat_arg_string[i] = "Cap. Rate";			i++;
+editing_stat_val = -1;	
 
 //Moves "Editing" Strings Array
 var i = 0;
@@ -164,3 +178,35 @@ for (var o = 0; o < array_length(mondex); o++;){
 	mondex[o, 12] = ini_read_string("Monster_" + string(o), "Val" + string(12), "");
 	}
 ini_close();
+
+
+//Loop through the current movedex values and save them to a new ini file
+if file_exists("movedex.ini"){
+	ini_open("movedex.ini");
+	for (var o = 0; o < array_length(movedex); o++;){
+		for (var i = 3; i < array_length(movedex[0]); i++;){
+			movedex[o, i] = ini_read_real("Move_" + string(o), "Val" + string(i), movedex[o, i]);
+			}
+		movedex[o, 0] = ini_read_string("Move_" + string(o), "Val" + string(0), movedex[o, 0]);
+		movedex[o, 1] = ini_read_string("Move_" + string(o), "Val" + string(1), movedex[o, 1]);
+		movedex[o, 2] = asset_get_index(ini_read_string("Move_" + string(o), "Val" + string(2), movedex[o, 2]));
+		}
+	ini_close();
+	}
+			
+
+//Loop through the current movepools values and save them to a new ini file
+if file_exists("movepools.ini"){
+	ini_open("movepools.ini");
+	
+	for (var o = 0; o < array_length(movepool); o++;){
+		var length = ini_read_real("Monster_" + string(o), "Movepool_Length", 0);
+		for (var i = 0, ii = 0; i < length; i++;){
+		
+			movepool[o, ii] =	ini_read_real("Monster_" + string(o), "Move" + string(i), 0);
+			movepool[o, ii+1] = ini_read_real("Monster_" + string(o), "Level" + string(i), 0);
+			ii+=2;
+			}
+		}
+	ini_close();
+	}
