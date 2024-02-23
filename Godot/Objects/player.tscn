@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b4j12lkqer235"]
+[gd_scene load_steps=40 format=3 uid="uid://b4j12lkqer235"]
 
 [ext_resource type="Script" path="res://Objects/player.gd" id="1_ov8ol"]
 [ext_resource type="Texture2D" uid="uid://bqm1ojpkh60ka" path="res://Assets/Player/Player-Boy.png" id="2_eopbm"]
@@ -501,8 +501,6 @@ states/Walk/position = Vector2(426, 122)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_pxp0r"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_ei67u"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_4hnsf"), "Idle", "Turn", SubResource("AnimationNodeStateMachineTransition_af1sd"), "Turn", "Idle", SubResource("AnimationNodeStateMachineTransition_lwu2m")]
 graph_offset = Vector2(-137, 48)
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_gufw2"]
-
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 6
 up_direction = Vector2(0, 1)
@@ -527,16 +525,17 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q4gvr")
+}
 tree_root = SubResource("AnimationNodeStateMachine_3xvt3")
 anim_player = NodePath("../AnimationPlayer")
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_gufw2")
 parameters/Idle/blend_position = Vector2(-0.00129032, 0.00283289)
 parameters/Turn/blend_position = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(-0.00129032, 0.005988)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(8, 8)
-current = true
 
 [node name="BlockingRayCast2D" type="RayCast2D" parent="."]
 position = Vector2(8, 8)

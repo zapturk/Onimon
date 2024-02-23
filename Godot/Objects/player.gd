@@ -43,7 +43,7 @@ var percentMovedToNextTile = 0.0
 
 func _ready():
 	z_index = 100
-	$Camera2D.current = true
+#	$Camera2D.current = true
 	$Sprite2D.visible = true
 	animTree.active = true
 	initialPosition = position
@@ -138,9 +138,9 @@ func Move(delta):
 			position = initialPosition + (TILE_SIZE * inputDir)
 			percentMovedToNextTile = 0.0
 			isMoving = false
-			#stopInput = true
-			#$AnimationPlayer.play("Disappear")
-			#EnteredDoor()
+			stopInput = true
+			$AnimationPlayer.play("Disappear")
+			EnteredDoor()
 		else:
 			position = initialPosition + (TILE_SIZE * inputDir * percentMovedToNextTile)
 	
