@@ -20,6 +20,5 @@ func enteredDoor():
 	if active:
 		get_node(NodePath("/root/SceneManager")).transitionToScreen(nextScenePath, spawnLocation, spawnDirection)
 
-
 func _on_body_entered(body):
 	active = true
